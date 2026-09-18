@@ -1,0 +1,74 @@
+ACC eDocket research notes — Mohave Electric Cooperative / AEPCO / UNS Electric large-load process
+Fetched/browsed 2026-09-09 by Claude Code research agent for Center for Western Priorities.
+Source: https://edocket.azcc.gov (Arizona Corporation Commission eDocket, browsed live; no PDF export available
+because docket detail pages are rendered client-side and could not be downloaded as static files. Individual
+document PDFs at images.edocket.azcc.gov could not be fetched via WebFetch due to a TLS certificate hostname
+mismatch: "Host: images.edocket.azcc.gov is not in the cert's altnames" -- the cert only lists
+corporations.images.azcc.gov, docket.images.azcc.gov, images.edocket.images.azcc.gov, safety.images.azcc.gov.
+This looks like a server misconfiguration on the ACC's end, not a permissions issue on our side.)
+
+===========================================================================
+DOCKET E-00000A-25-0069
+===========================================================================
+Company Name (nominal): Arizona Corporation Commission
+Docket Type: Electric / Generic
+Status: Open
+Filed: 04/02/2025
+Description: "In the Matter of the Commission's Inquiry and Review of the Existing Rate Classifications and
+other Potential Issues relating to Data Centers."
+
+This is a GENERIC POLICY docket (workshops, comment letters), not a project-specific docket. It contains no
+applicant-level detail (no project names, MW figures tied to specific sites, or counties for individual
+projects). Reviewed the Documents tab (3 pages); entries seen were consumer/interest-group comment letters
+(RUCO, APS, SRP, TEP, Goldwater Institute, Interwest Energy Alliance, Capital Power, Arizona PIRG, various
+academic/NGO commenters on data center water/energy impacts, some "Rejected - Miscellaneous Comments" entries).
+NONE of Frontier / Harquahala / TAP / Copia Digital / Leo Data / Copia appear in the document descriptions,
+filer names, or "filed for" names on the pages reviewed.
+
+A related news summary (via WebFetch of azcc.gov news page, see below) states aggregate MW figures from an
+April 16, 2026 workshop in this docket:
+  - SRP: 59 large-load customers, "nearly 7,000 MW combined load" (no project-level breakdown given)
+  - APS: peak demand for large customers "approximately 13.1 gigawatts this year" (aggregate figure only)
+  - TEP/UNS: one data center project under contract, "estimated load forecast of 286 MW" (unnamed);
+    other prospective TEP/UNS data center projects forecast to require "about 800 MW" (unnamed)
+  - Statewide: ~2,000 MW operating data center capacity, "more than 10,600 MW of additional capacity planned"
+  - Quote: "APS and SRP have developed their own queue process for whittling down prospective data center
+    customers" -- i.e., this queue is NOT the same as the public FERC generator-interconnection queue, and
+    is not published with applicant names.
+Source URL: https://www.azcc.gov/news/home/2026/04/20/acc-large-load-data-center-workshop-highlights
+
+===========================================================================
+DOCKET E-01773A-26-0123
+===========================================================================
+Company Name: Arizona Electric Power Cooperative, Inc. (AEPCO)
+Docket Type: Electric / Joint Application
+Status: Compliance Due
+Filed: 04/16/2026
+Description: "In the matter of the joint application for a streamlined process for multiparty agreements for
+electric service to large-load customers submitted by Arizona Electric Power Cooperative, Inc., Duncan Valley
+Electric Cooperative, Inc., Graham County Electric Cooperative, Inc., Mohave Electric Cooperative, Inc.,
+Sulphur Springs Valley Electric Cooperative, Inc., and Trico Electric Cooperative, Inc."
+"There is 6 companies involved with this case."
+
+Decision: ACC approved this application unanimously at its 08/12/2026 Open Meeting (Decision #82128 posted
+08/27/2026 per the Documents tab).
+
+This is ALSO a generic PROCESS/FRAMEWORK docket -- it creates a standardized approval pathway the co-ops
+(including Mohave Electric Cooperative, which serves the Lake Havasu City / Bullhead City / Kingman corridor)
+will use for FUTURE large-load service agreements. It does not itself identify any specific large-load
+customer, project, county, or MW figure. Individual large-load service agreements negotiated under this new
+process would presumably be filed as SEPARATE dockets (one per customer/utility) once/if they occur; no such
+follow-on docket naming Frontier / Harquahala / TAP / Copia Digital / Leo Data was found in the time available.
+News coverage (mohavedailynews.com, azfreenews.com, ktar.com, kjzz.org, gilavalleycentral.net,
+bigcountrynewsconnection.com) confirms: "The utilities said they are already in talks with several large-load
+businesses looking to build facilities in their service areas" -- but no business names were reported.
+
+===========================================================================
+CONCLUSION FOR THIS PROJECT
+===========================================================================
+Neither ACC docket reviewed contains project-, applicant-, or site-specific information matching any of the
+four BLM filings (Frontier, Harquahala, TAP, Leo Data / Copia Digital). Both are policy/process dockets. If a
+specific Mohave Electric Cooperative or APS large-load service agreement docket exists for one of these named
+projects, it was not surfaced by keyword/company search in the time available -- ACC eDocket's search UI is an
+autocomplete-driven company/DBA picker rather than a full-text search, which limits the ability to search by an
+applicant name unless that name is already a party of record.

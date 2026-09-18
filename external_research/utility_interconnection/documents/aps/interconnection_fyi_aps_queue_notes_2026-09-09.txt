@@ -1,0 +1,50 @@
+Interconnection.fyi (GridTracker) research notes -- APS generation queue and AZ data center tracker
+Browsed live 2026-09-09 by Claude Code research agent for Center for Western Priorities.
+Source: https://interconnection.fyi (a free public aggregator built on utility/ISO FERC generator-
+interconnection queue filings; NOT a load-interconnection or large-load tracker). No PDF/CSV export was
+downloaded -- data is rendered as an HTML table; relevant excerpts are quoted below and the URLs are logged for
+reference/re-fetch.
+
+===========================================================================
+1) Arizona Public Service generator interconnection queue
+===========================================================================
+URL: https://interconnection.fyi/projects/transmission-owner/arizona-public-service
+Total projects listed: 687 (214 Active / 35 Operational / 438 Withdrawn)
+Every entry is labeled "Unnamed Project" with a queue ID (Q1, Q2, Q100, etc.) and an energy type icon
+(Solar / Wind / Gas / Battery / Biomass / Coal / Landfill / Other). Spot-checked entries in La Paz County
+(Q114, Q146 -- both Solar, both Withdrawn) and Yuma County, Mohave County (Q26 -- Wind, Withdrawn), and
+Maricopa County. NONE are tagged as "Load" type or as data centers; this is exclusively a GENERATION
+interconnection queue (solar/wind/gas/battery/coal/biomass/landfill projects seeking to inject power), not a
+load-interconnection or large-load queue. Applicant/developer names are not published at all (every row reads
+"Unnamed Project") -- so even if a data-center-affiliated generation project existed in this list (e.g. a
+co-located gas peaker), it would not be identifiable by name through this source.
+CONCLUSION: This dataset cannot confirm or rule out Frontier / Harquahala / TAP / Copia Digital / Leo Data,
+because it does not cover load interconnection at all, and even generation entries are anonymized.
+
+===========================================================================
+2) Arizona data center tracker (GridTracker's own compiled list, separate from the queue data)
+===========================================================================
+URL: https://interconnection.fyi/data-center/state/AZ
+103 Arizona data center records total (77 Operational / 0 Construction / 24 Proposed). Full facility list
+reviewed. ALL 103 records are in Maricopa County or Pima County. Zero records in La Paz County, Mohave County,
+or Yuma County. No facility name in the list resembles Frontier, Harquahala, TAP, Copia (Digital), or Leo
+(Data). Named operators/developers present include: 11:11 Systems, Aligned Data Centers, Apple, CyrusOne,
+Compass Datacenters, Digital Realty, GoDaddy, Google, H5 Data Centers, Iron Mountain, Meta, Microsoft, NTT,
+QTS, Stack Infrastructure, Stream Data Centers, Vantage Data Centers, and others -- all Phoenix-metro or
+Tucson-area facilities.
+CONCLUSION: No matching entry found for any of the four BLM projects in this third-party dataset. This is
+consistent with (a) these four projects being too new/rural to have been picked up by GridTracker's compilers
+yet, and/or (b) GridTracker's data center tracker simply not covering rural La Paz/Mohave county sites the way
+it covers established Phoenix/Tucson-metro data center clusters. Treat as a "no match" data point, not
+confirmation of absence.
+
+===========================================================================
+Other dead ends logged
+===========================================================================
+- https://www.interconnection.fyi/?state=AZ -- summary/landing page only, no per-project detail rendered via
+  WebFetch (page requires JS rendering; browser tool was used instead for the two URLs above).
+- http://www.oatioasis.com/azps/index.html -- APS's official OASIS/FERC interconnection portal; WebFetch failed
+  with "getaddrinfo ENOTFOUND www.oatioasis.com" (DNS did not resolve for the automated fetch tool). Not
+  re-attempted via browser due to time; APS's own OASIS site is the authoritative source for the FERC
+  generator-interconnection queue and should be checked directly by a human researcher if the anonymized
+  interconnection.fyi mirror is insufficient.

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+  <feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+      <email>webmaster@sec.gov</email>
+      <name>Webmaster</name>
+    </author>
+    <company-info>
+      <addresses>
+        <address type="mailing">
+          <city>EVANSTON</city>
+          <state>WY</state>
+          <street1>8936 COUNTY ROAD 180</street1>
+          <zip>82930</zip>
+        </address>
+        <address type="business">
+          <city>HOUSTON</city>
+          <phone>713-670-6944</phone>
+          <state>TX</state>
+          <street1>2550 NORTH LOOP WEST</street1>
+          <street2>SUITE 240</street2>
+          <zip>77092</zip>
+        </address>
+      </addresses>
+      <cik>0002145894</cik>
+      <cik-href>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002145894&amp;owner=include&amp;count=40</cik-href>
+      <conformed-name>Prometheus Hyperscale</conformed-name>
+      <fiscal-year-end>1231</fiscal-year-end>
+      <state-location>TX</state-location>
+      <state-location-href>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;State=TX&amp;owner=include&amp;count=40</state-location-href>
+      <state-of-incorporation>WY</state-of-incorporation>
+    </company-info>
+    <entry>
+      <category label="form type" scheme="https://www.sec.gov/" term="D" />
+      <content type="text/xml">
+        <accession-number>0002145894-26-000002</accession-number>
+        <act>33</act>
+        <file-number>021-596745</file-number>
+        <file-number-href>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=021-596745&amp;owner=include&amp;count=40</file-number-href>
+        <filing-date>2026-09-09</filing-date>
+        <filing-href>https://www.sec.gov/Archives/edgar/data/2145894/000214589426000002/0002145894-26-000002-index.htm</filing-href>
+        <filing-type>D</filing-type>
+        <film-number>261366106</film-number>
+        <form-name>Notice of Exempt Offering of Securities</form-name>
+        <items-desc>item 06b</items-desc>
+        <size>9 KB</size>
+      </content>
+      <id>urn:tag:sec.gov,2008:accession-number=0002145894-26-000002</id>
+      <link href="https://www.sec.gov/Archives/edgar/data/2145894/000214589426000002/0002145894-26-000002-index.htm" rel="alternate" type="text/html" />
+      <summary type="html"> &lt;b&gt;Filed:&lt;/b&gt; 2026-09-09 &lt;b&gt;AccNo:&lt;/b&gt; 0002145894-26-000002 &lt;b&gt;Size:&lt;/b&gt; 9 KB</summary>
+      <title>D  - Notice of Exempt Offering of Securities</title>
+      <updated>2026-09-08T18:03:20-04:00</updated>
+    </entry>
+    <id>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002145894</id>
+    <link href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002145894&amp;type=D&amp;owner=include&amp;start=0&amp;count=40" rel="alternate" type="text/html" />
+    <link href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002145894&amp;type=D&amp;owner=include&amp;start=0&amp;count=40&amp;output=atom" rel="self" type="application/atom+xml" />
+    <title>Prometheus Hyperscale  (0002145894)</title>
+    <updated>2026-09-09T20:10:40-04:00</updated>
+  </feed>

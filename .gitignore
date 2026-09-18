@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.bak
+*.bak2
+
+# raw downloaded county-record PDFs (339MB, includes a 270MB single file that
+# exceeds GitHub's 100MB hard file-size limit) - keep the synthesized
+# findings.md, just not the raw source PDFs
+external_research/local_records/documents/

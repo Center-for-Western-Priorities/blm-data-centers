@@ -1,0 +1,1818 @@
+
+<!doctype html>
+<html lang="en-US" class="nojs">
+<head>
+	<style>
+    .osano-cm-widget {
+        display: none;
+    }
+</style>
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer[0] = {}; // rj datalayer.
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'personalization_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500,
+    });
+    gtag("set", "ads_data_redaction", true);
+</script>
+<script>
+    var pbjs = pbjs || {};
+    pbjs.que = pbjs.que || [];
+    pbjs.que.push(function () {
+        pbjs.setConfig({
+            consentManagement: {
+                gdpr: {
+                    cmpApi: 'iab', // Use IAB TCF API
+                    timeout: 3000,  // Wait up to 3s for user response
+                    allowAuctionWithoutConsent: false, // Suppress auctions if no consent
+                    defaultGdprScope: true, // Enforce GDPR globally if unsure
+                },
+                usp: {
+                    cmpApi: 'iab', // Use IAB CCPA/CPRA interface
+                    timeout: 100, // Wait up to 100ms for US privacy string
+                },
+                gpp: {
+                    cmpApi: 'iab', // IAB GPP API for US state-level laws and others
+                    timeout: 3000,  // Wait up to 3s for user response
+                }
+            }
+        });
+    });
+</script>
+
+<script src="https://cmp.osano.com/lHFYjdHC7m/e4ed2d21-fcbf-4acf-9ca3-35003751a65f/osano.js"></script>
+
+<script>
+    window.rjConsentHandler = {
+        handleAllConsents: function () {
+            console.log('Osano - RJ HandleAllConsents');
+            const consent = window.Osano.cm.getConsent();
+            window.rjConsentHandler.marketingConsent.handle(consent);
+            window.rjConsentHandler.analyticsConsent.handle(consent);
+        },
+        deletePlaceholders: function (selector) {
+            const elementsToDelete = document.querySelectorAll(selector);
+            elementsToDelete.forEach(element => {
+                element.remove();
+            });
+        },
+        createPlaceholder: function (text, className) {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'rj-consent-placeholder ' + className;
+            placeholder.innerHTML = `
+            <div>
+                <p>${text}</p>
+                <button onclick="window.Osano.cm.showDrawer()">Manage Privacy Settings</button>
+            </div>
+            `;
+            return placeholder;
+        },
+        marketingConsent: {
+            delete: function () {
+                window.rjConsentHandler.deletePlaceholders('.rj-consent-placeholder-marketing');
+            },
+            handle: function (consent) {
+                console.log('Osano - Marketing Consent: ', consent.MARKETING);
+                if (consent.MARKETING !== "ACCEPT") {
+                    // window.rjConsentHandler.marketingConsent.stn(consent);
+                    window.rjConsentHandler.marketingConsent.trinityAudio(consent);
+                }
+
+            },
+            stn: function (consent) {
+                // const blockedElems = document.querySelectorAll('script[type="osano/blocked"][data-type="s2nScript"]');
+                const blockedElems = document.querySelectorAll('.s2nPlayer');
+                const text = `
+                    Your privacy settings have blocked this video. To access, please adjust your cookie preferences.
+                    <br>Please provide consent for <b>Targeted Advertising</b> to view this content.
+                `;
+                blockedElems.forEach(elem => {
+                    const placeholder = window.rjConsentHandler.createPlaceholder(text, 'rj-consent-placeholder-marketing');
+                    elem.insertAdjacentElement("beforebegin", placeholder);
+                });
+            },
+            trinityAudio: function (consent) {
+                const blockedElems = document.querySelectorAll('#most-view-audio');
+                const text = `
+                    Your privacy settings have blocked this audio. To access, please adjust your cookie preferences.
+                    <br>Please provide consent for <b>Targeted Advertising</b> to view this content.
+                `;
+                blockedElems.forEach(elem => {
+                    const placeholder = window.rjConsentHandler.createPlaceholder(text, 'rj-consent-placeholder-marketing');
+                    elem.insertAdjacentElement("beforebegin", placeholder);
+                });
+            },
+        },
+        analyticsConsent: {
+            delete: function () {
+                window.rjConsentHandler.deletePlaceholders('.rj-consent-placeholder-analytics');
+            },
+            handle: function (consent) {
+                console.log('Osano - Analytics Consent: ', consent.ANALYTICS);
+                if (consent.ANALYTICS !== "ACCEPT") {
+                    // Most read.
+                    window.rjConsentHandler.analyticsConsent.mostRead(consent);
+                }
+            },
+            mostRead: function () {
+                const blockedElems = document.querySelectorAll('.rj-most-view .field-story, #recommend-marfeel');
+                const text = `
+                    Your privacy settings have blocked this content. To access, please adjust your cookie preferences.
+                    <br>Please provide consent for <b>Analytics</b> to view this content.
+                `;
+                blockedElems.forEach(elem => {
+                    const placeholder = window.rjConsentHandler.createPlaceholder(text, 'rj-consent-placeholder-analytics');
+                    elem.insertAdjacentElement("beforebegin", placeholder);
+                });
+            },
+        },
+    };
+
+    window.Osano.cm.addEventListener('osano-cm-initialized', () => {
+        console.log('Osano - Initialized', 'Jurisdiction: ' + window.Osano.cm.jurisdiction);
+        const jurisdiction = window.Osano.cm.jurisdiction;
+        if (
+            jurisdiction &&
+            jurisdiction.startsWith('us-') &&
+            ![
+                'us-ca', 'us-co', 'us-ct', 'us-de', 'us-ia',
+                'us-mn', 'us-mt', 'us-ne', 'us-nh', 'us-nj',
+                'us-or', 'us-tn', 'us-tx', 'us-ut', 'us-va'
+            ].includes(jurisdiction)
+        ) {
+            const observer = new MutationObserver((mutations, obs) => {
+                const message = document.querySelector('.osano-cm-content__message.osano-cm-message');
+                if (message) {
+                    message.textContent = "This website uses cookies and similar tracking technologies and collects information about you and your visit. You may manage your cookie preferences by clicking the “Manage Preferences” button below.";
+                    obs.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        window.rjConsentHandler.handleAllConsents();
+
+    });
+    window.Osano.cm.addEventListener('osano-cm-script-blocked', function (item) {
+        console.log('Osano - Script blocked: ', item);
+    });
+    window.Osano.cm.addEventListener('osano-cm-cookie-blocked', function (item) {
+        console.log('Osano - Cookie blocked: ', item);
+    });
+    window.Osano.cm.addEventListener('osano-cm-analytics', function () {
+        console.log('Osano - Consent granted for analytics. Delete analytics placeholders.');
+        window.rjConsentHandler.analyticsConsent.delete();
+    });
+    window.Osano.cm.addEventListener('osano-cm-marketing', function () {
+        console.log('Osano - Consent granted for marketing. Delete marketing placeholders.');
+        window.rjConsentHandler.marketingConsent.delete();
+    });
+</script>
+<style>
+    .rj-consent-placeholder {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f9f9f9;
+        border: 1px dashed #bbb;
+        text-align: center;
+        font-size: 13px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .rj-consent-placeholder button {
+        margin-top: 10px;
+        padding: 3px 5px;
+        border-radius: 5px;
+        font-size: 12px;
+        color: #fff;
+        background-color: #000;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+</style>	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Merriweather:400,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet';" />
+	<link rel="preload" href="https://use.typekit.net/msl8qnj.css" as="style" onload="this.onload=null;this.rel='stylesheet';">
+	<link rel="preload" href="https://bouldercityreview.com/wp-content/themes/rjth2019/library/font-awesome-4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet';" />
+	<!-- intersection-observer.min.js already available in most browser -->
+
+			<!-- BEGIN metadata tag -->
+		<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"NewsArticle","publisher":{"@type":"Organization","name":"Boulder City Review","logo":{"@type":"ImageObject","url":"https:\/\/bouldercityreview.com\/wp-content\/uploads\/2019\/06\/bcr_logo_400_black-1.png?w=400","width":400,"height":40}},"mainEntityOfPage":"https:\/\/bouldercityreview.com\/post\/131498","image":["https:\/\/bouldercityreview.com\/wp-content\/uploads\/2026\/09\/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?w=700"],"thumbnailUrl":"https:\/\/bouldercityreview.com\/wp-content\/uploads\/2026\/09\/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?w=150&h=150&crop=1","headline":"Judge halts construction of embattled Boulder City data center on public land","url":"https:\/\/bouldercityreview.com\/post\/131498","dateCreated":"2026-09-04T00:01:15Z","datePublished":"2026-09-04T00:01:15Z","dateModified":"2026-09-04T00:01:17Z","creator":[{"@type":"Person","name":"Alan Halaly Las Vegas Review-journal"}],"keywords":"Community, News, mc-news","description":"A federal judge paused construction of a Boulder City data center on public land, siding with environmentalists and city officials challenging the BLM\u2019s approval.","articleSection":"News","isAccessibleForFree":true,"author":[{"@type":"Person","name":"Alan Halaly Las Vegas Review-journal"}]}</script>
+		<!-- END metadata tag -->
+					<script type="text/javascript">
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer[0] = {"rj_page_type":"story","node_type":"article","vdo_num":0,"img_num":2,"content_source":"Local","metrics":{"pageType":"article","mediaType":"article","articleId":131498,"articlePublishTime":"2026-09-04T00:01:15+00:00","articleUpdateTime":"2026-09-04T00:01:17+00:00","articleType":"post","author":["Alan Halaly Las Vegas Review-journal"],"articleSource":"Local","section":"News","categories":["News","Community"],"hierarchy":"News","hl-category":"News"}};
+			function rj_gtag() {
+				if (!arguments || 'event' !== arguments[0] || !arguments[2] || !arguments[2].event_category || !arguments[2].event_action || !arguments[2].event_label) {
+					return;
+				}
+
+				let data = arguments[2];
+				window.dataLayer.push({
+					'event': 'GAEvent',
+					'category': data.event_category,
+					'action': data.event_action,
+					'label': data.event_label
+				});
+			}
+		</script>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-WGWWVQ');</script>
+		<!-- End Google Tag Manager -->
+				<title>Judge halts Boulder City data center on public land, siding with environmentalists and city | Boulder City Review</title>
+<meta name='robots' content='max-image-preview:large' />
+<link rel='dns-prefetch' href='//securepubads.g.doubleclick.net' />
+<link rel='dns-prefetch' href='//media.reviewjournal.com' />
+<link rel='dns-prefetch' href='//v0.wordpress.com' />
+<link rel="alternate" type="application/rss+xml" title="Boulder City Review &raquo; Feed" href="https://bouldercityreview.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Boulder City Review &raquo; Comments Feed" href="https://bouldercityreview.com/comments/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://bouldercityreview.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fbouldercityreview.com%2Fnews%2Fjudge-halts-construction-of-embattled-boulder-city-data-center-on-public-land-131498%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://bouldercityreview.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fbouldercityreview.com%2Fnews%2Fjudge-halts-construction-of-embattled-boulder-city-data-center-on-public-land-131498%2F&#038;format=xml" />
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<link rel='stylesheet' id='all-css-2' href='https://bouldercityreview.com/_static/??-eJzTLy/QTc7PK0nNK9EvyUjNTS3WL8oqyTAyMLTULy6pzEnVy83M00suLtbRx6MSKK9fnJ2ZByF1k3JKU4nSU5BfXAKzwD7X1tDcwtzIxNLExBgAL3s04w==' type='text/css' media='all' />
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<script id="jquery-core-js" src="https://bouldercityreview.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script type="text/javascript" src="https://bouldercityreview.com/wp-includes/js/jquery/jquery-migrate.min.js?m=1787604914g" ></script><script id="rjth-post-js-extra">
+var js_data = {"google_api_key":"AIzaSyDMcDUzs0wcz1AkNXgewafVYI8PODGC_cw","gallery_auto_full_screen":"1","gallery_ads_slide_th":"","gallery_ads_slide":"","gallery_ads_under":"","gallery_ads_left":"","gallery_ads_right":"","gallery_ads_under_uid":"","gallery_ads_right_uid":""};
+//# sourceURL=rjth-post-js-extra
+</script>
+<script type="text/javascript" src="https://bouldercityreview.com/_static/??-eJx9jUsOgjAQhi+k/IJNkIXxKAawkWmmj3SmAW6vmJi4UPffA3PajzGoDQqdrLeC7HRqDnUHJxBhutnKU6ic7PAf5n6NRb/BicudwkaDach9XrG8yrg+veXn5MNLZWAat02K8p5c/LluT21jOmOO7gHCn0lj"  defer></script><script id="gpt-js" async="async" src="//securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script id="gpt-js-after">
+window.googletag = window.googletag || {cmd: []};
+//# sourceURL=gpt-js-after
+</script>
+<script id="prebidjs-js" async="async" src="https://media.reviewjournal.com/media/projects/header-bidding/prebid-10.25.0.js"></script>
+<script id="ad-tags-js-extra">
+var rj_ads_info = {"ad_unit_path_prefix":"/104590658/BCR","header_bidding_enabled":"1","adsConfig":{"debug":false,"enableSingleRequest":false,"useSafeFrame":false,"lazyAdsRootMargin":"400px 0px","inViewRefresh":30,"outOfViewRefresh":300,"filterConfig":{"advertisers":[],"campaigns":[],"lineItems":[]},"queryParamAllowlist":[],"enableLargeGalleryAd":true},"post_id":"131498","article":"1","level":"1","parent":[""],"child":[""],"section":["news"],"env":"production","enable_listener":"0","enable_refresh":"1","enable_lazyload":"1","use_safeframe":"0","biddersConfig":{"config":{"bidderTimeout":1500},"prebidTimeout":2000,"failsafeTimeout":3000,"checkMobile":false,"bidCpmMin":0.15,"bidCpmAdjustment":1.5,"allowBidCpmAdjustment":false,"bidders":[{"bidder":"pubmatic","extraParams":{"publisherId":"165465","adSlot":"6238106"},"sizes":[[300,250],[336,280],[300,600],[320,50],[728,90],[970,250],[970,90],[300,100]]},{"bidder":"opsco","extraParams":{"publisherId":"1024","placementId":"10240011"},"sizes":[[300,250]]},{"bidder":"opsco","extraParams":{"publisherId":"1024","placementId":"10240012"},"sizes":[[300,250]]},{"bidder":"opsco","extraParams":{"publisherId":"1024","placementId":"10240010"},"sizes":[[320,50]]},{"bidder":"opsco","extraParams":{"publisherId":"1024","placementId":"10240009"},"sizes":[[728,90]]},{"bidder":"opsco","extraParams":{"publisherId":"1024","placementId":"10240014"},"sizes":[[970,250]]},{"bidder":"opsco","extraParams":{"publisherId":"1024","placementId":"10240007"},"sizes":[[300,600]]},{"bidder":"criteo","extraParams":{"networkId":"7238","zoneId":"1770234"},"sizes":[[300,250]]},{"bidder":"criteo","extraParams":{"networkId":"7238","zoneId":"1770237"},"sizes":[[320,50]]},{"bidder":"criteo","extraParams":{"networkId":"7238","zoneId":"1770235"},"sizes":[[728,90]]},{"bidder":"criteo","extraParams":{"networkId":"7238","zoneId":"1770238"},"sizes":[[970,250]]},{"bidder":"criteo","extraParams":{"networkId":"7238","zoneId":"1770236"},"sizes":[[300,600]]},{"bidder":"mediafuse","extraParams":{"placementId":"29552594"},"id":"29552594","sizes":[[300,250]]},{"bidder":"mediafuse","extraParams":{"placementId":"29552595"},"id":"29552595","sizes":[[320,50]]},{"bidder":"mediafuse","extraParams":{"placementId":"29552598"},"id":"29552598","sizes":[[728,90]]},{"bidder":"mediafuse","extraParams":{"placementId":"29552601"},"id":"29552601","sizes":[[970,250]]},{"bidder":"mediafuse","extraParams":{"placementId":"29552603"},"id":"29552603","sizes":[[300,600]]},{"bidder":"kargo","extraParams":{"placementId":"_xrF2qMjjNB"},"sizes":[[970,250],[970,90]]},{"bidder":"kargo","extraParams":{"placementId":"_jY4Xur8ztT"},"sizes":[[728,90]]},{"bidder":"kargo","extraParams":{"placementId":"_pNs8tMabfV"},"sizes":[[300,250],[336,280]]},{"bidder":"kargo","extraParams":{"placementId":"_wznUW4u7I4"},"sizes":[[300,600]]},{"bidder":"kargo","extraParams":{"placementId":"_ahh1QM5VLM"},"sizes":[[320,50]]},{"bidder":"nativo","extraParams":{"placementId":"1593478"},"sizes":[[300,600]]},{"bidder":"nativo","extraParams":{"placementId":"1593482"},"sizes":[[300,250],[336,280]]},{"bidder":"nativo","extraParams":{"placementId":"1593483"},"sizes":[[728,90],[320,50]]}]}};
+//# sourceURL=ad-tags-js-extra
+</script>
+<script id="ad-tags-js" async="async" src="https://bouldercityreview.com/wp-content/plugins/rj/public/js/ad-tags_bid/ad-tags.min.js?ver=20260828"></script>
+<script id="rj-lazy-load-js" async="async" src="https://bouldercityreview.com/wp-content/plugins/rj-lazy-load/js/rj-lazy-load.min.js?ver=20260828"></script>
+<link rel="https://api.w.org/" href="https://bouldercityreview.com/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://bouldercityreview.com/wp-json/wp/v2/posts/131498" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://bouldercityreview.com/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.1" />
+<link rel="canonical" href="https://bouldercityreview.com/news/judge-halts-construction-of-embattled-boulder-city-data-center-on-public-land-131498/" />
+<link rel='shortlink' href='https://bouldercityreview.com/?p=131498' />
+
+<!-- RJ Meta Tags -->
+<meta name="description" content="A federal judge paused construction of a Boulder City data center on public land, siding with environmentalists and city officials challenging the BLM’s approval." />
+<meta name="rj:id" content="post_id-131498" />
+<meta name="vf:container_id" content="post_id-131498" />
+<meta property="article:author" content="Alan Halaly Las Vegas Review-journal" />
+<meta property="article:published_time" content="2026-09-04T00:01:15Z" />
+<meta property="mrf:canonical" content="https://bouldercityreview.com/news/judge-halts-construction-of-embattled-boulder-city-data-center-on-public-land-131498/" />
+<meta property="mrf:cms_id" content="bcr--post--131498" />
+
+<!-- Open Graph Tags -->
+<meta property="og:site_name" content="Boulder City Review" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Judge halts construction of embattled Boulder City data center on public land" />
+<meta property="og:url" content="https://bouldercityreview.com/news/judge-halts-construction-of-embattled-boulder-city-data-center-on-public-land-131498/" />
+<meta property="og:description" content="A federal judge paused construction of a Boulder City data center on public land, siding with environmentalists and city officials challenging the BLM’s approval." />
+<meta property="og:image" content="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="800" />
+<meta property="article:published_time" content="2026-09-04T00:01:15+00:00" />
+<meta property="article:modified_time" content="2026-09-04T00:01:17+00:00" />
+
+<!-- END Open Graph Tags -->
+
+<!-- Twitter Card Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@bcreview" />
+<meta name="twitter:title" content="Judge halts construction of embattled Boulder City data center on public land" />
+<meta name="twitter:description" content="A federal judge paused construction of a Boulder City data center on public land, siding with environmentalists and city officials challenging the BLM’s approval." />
+<meta name="twitter:image" content="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg" />
+
+<!-- END Twitter Card Tags -->
+
+<!-- End RJ Meta Tags -->
+		<style type="text/css">
+			/* If html does not have either class, do not show lazy loaded. */
+			html:not( .rj-lazy-load-js-enabled ):not( .js ) .rj-lazy-load {
+				display: none;
+			}
+		</style>
+		<script>
+            document.documentElement.classList.add(
+                'rj-lazy-load-js-enabled'
+            );
+		</script>
+			<style>img#wpstats{display:none}</style>
+		<link rel="apple-touch-icon" sizes="180x180" href="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/apple-touch-icon.png"><link rel="icon" type="image/png" href="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/favicon-32x32.png" sizes="32x32"><link rel="icon" type="image/png" href="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/favicon-16x16.png" sizes="16x16"><link rel="shortcut icon" href="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/favicon.ico"><link rel="mask-icon" href="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/safari-pinned-tab.svg" color="#c21c2b"/><link rel="manifest" href="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/manifest.json"><meta name="msapplication-config" content="https://bouldercityreview.com/wp-content/themes/rjth2019/favicons/bcr/browserconfig.xml"><meta name="theme-color" content="#ffffff"><style id="wp-custom-css">
+.rj-story-sponsored-full figure.wp-caption {
+    width: auto !important;
+}
+.rj-story-sponsored-full img.aligncenter {
+    width: 100%;
+    height: auto;
+}
+.rj-story-sponsored-full figure.wp-caption.lightbox {
+    width: 100% !important;
+}
+
+/* fix chrome image issue */
+/*
+.xslide .media-wrap > img {
+contain-intrinsic-size: 1200px 800px;
+}
+*/
+
+@media (min-width: 768px) {
+    .rj-widget.top-news-1-4 .field-col.left .rj-story {
+        border-bottom: 1px solid #ccc;
+    }
+}
+</style>
+
+	
+	<!-- Marfeel Pixel -->
+<script type="text/javascript">
+let mrf_page_type = 0;
+let _ua = navigator.userAgent;
+
+if ( /RJAppOS\/ios/i.test(_ua) ) {
+	mrf_page_type = 3;
+}
+if ( /RJAppOS\/android/i.test(_ua) ) {
+	mrf_page_type = 4;
+}
+if ( /VNAppOS\/ios/i.test(_ua) ) {
+	mrf_page_type = 3;
+}
+if ( /VNAppOS\/android/i.test(_ua) ) {
+	mrf_page_type = 4;
+}
+function e(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],c=document.createElement("script");c.src=e,t?c.type="module":(c.async=!0,c.type="text/javascript",c.setAttribute("nomodule",""));var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(c,n)}function t(t,c,n){var a,o,r;null!==(a=t.marfeel)&&void 0!==a||(t.marfeel={}),null!==(o=(r=t.marfeel).cmd)&&void 0!==o||(r.cmd=[]),t.marfeel.config=n,t.marfeel.config.accountId=c;var i="https://sdk.mrf.io/statics";e("".concat(i,"/marfeel-sdk.js?id=").concat(c),!0),e("".concat(i,"/marfeel-sdk.es5.js?id=").concat(c),!1)}!function(e,c){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{};t(e,c,n)}(window,2632,{"pageType":mrf_page_type});
+</script>
+<!-- End Marfeel Pixel --></head>
+
+<body class="wp-singular post-template-default single single-post postid-131498 single-format-standard wp-custom-logo wp-theme-rjth2019 rj-main-category--news rj-main-category-id--9">
+			<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGWWVQ"
+						  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		
+	<header id="header-main">
+		<div id="menu-top" class="rj-container">
+			<div id="button-nav-toggle" class="menu-bars">
+				<i class="fa fa-bars" aria-hidden="true"></i>
+			</div>
+			<div id="rjth-region-header">
+				<div id="rj_widget_text-44" class="rj-widget-num-1 rj-widget-first rj-widget-odd top-logo-container rj-widget rj_widget_text">		<div class="rj-logo">
+<div class="h1"><a href="/" title="rj-logo" rel="home" itemprop="url"><img src="https://bouldercityreview.com/wp-content/uploads/2019/06/bcr_logo_400.png" alt="site-logo" width="400" height="40" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2019/06/bcr_logo_400.png?is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class=" rj-lazy-load lazy-image"><noscript><img src="https://bouldercityreview.com/wp-content/uploads/2019/06/bcr_logo_400.png" alt="site-logo" width="400" height="40" /></noscript></a>
+</div>
+</div>		</div><div id="rj_widget_text-45" class="rj-widget-num-2 rj-widget-last rj-widget-even subs-menu-container rj-widget rj_widget_text">		<style>
+#mg2-subscribe-link {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    bottom: 19px;
+    margin-top: 6px;
+    margin-left: 8px;
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #d82121;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+</style>
+<a id="mg2-subscribe-link"  target="_blank" rel="nofollow noopener" class="subs-elem" href="https://checkout.reviewjournal.com/basic1?sitecode=bcr&?g2i_source=referral&g2i_medium=internet&g2i_campaign=internet&g2i_or_o=internet&g2i_or_p=default">SUBSCRIBE</a>
+<script>
+(function ($) {
+    $('#mg2-subscribe-link').appendTo('#rjth-region-header');
+})(jQuery);    
+</script>		</div>			</div><!-- #rjth-region-header -->
+
+					</div><!-- #menu-top -->
+
+		<div id="menu-main" class="rj-container">
+			<div class="menu-weather">
+				<a href="/weather" title="Weather Forecast">
+					<span class="wdegrees">103°F</span>
+					<img class="wicon" alt="weather icon" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,q_auto,c_scale,w_40/rj-project/apple_weather/PartlyCloudyDay.png" />
+				</a>
+			</div>
+							<div class="menu-top-menu-container"><ul id="primary-menu" class="nav navbar-nav"><li id="menu-item-23303" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-23303"><a href="https://bouldercityreview.com/./news/">News</a></li>
+<li id="menu-item-23304" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-23304"><a href="https://bouldercityreview.com/./community/">Community</a></li>
+<li id="menu-item-23305" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23305"><a href="https://bouldercityreview.com/./sports/">Sports</a></li>
+<li id="menu-item-23306" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23306"><a href="https://bouldercityreview.com/./opinion/">Opinion</a></li>
+<li id="menu-item-23307" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23307"><a href="https://bouldercityreview.com/./entertainment/">Entertainment</a></li>
+<li id="menu-item-23606" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23606"><a href="https://obituaries.bouldercityreview.com/">Obituaries</a></li>
+<li id="menu-item-23302" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23302"><a href="https://bouldercityreview.com/classifieds/">Classifieds</a></li>
+<li id="menu-item-52873" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-52873"><a href="https://bouldercityreview.com/media-index/">Videos</a></li>
+<li id="menu-item-56518" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56518"><a href="https://eedition.bouldercityreview.com/html5/reader/production/default.aspx?pubname=&#038;pubid=40de2c4b-7cc0-49af-aec9-2768d23e67dd">eEdition</a></li>
+</ul></div>						<div class="menu-search">
+				<div class="menu-search-helper">
+					<form action="https://bouldercityreview.com/" class="search-form">
+						<input class="search-text" name="s" placeholder="Enter your search term..." type="search">
+					</form>
+					<a class="search-icon" title="search icon" href="#">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</a>
+				</div>
+			</div>
+		</div><!-- #menu-main -->
+
+		<div id="side-rail-nav" class="side-rail-nav">
+			<a href="#" id="close-side-rail-nav" aria-label="close-button"></a>
+
+			<div id="weather-widget">
+				<div class="wdegrees">103°F</div>
+				<img class="wicon" alt="weather icon" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,q_auto,c_scale,w_40/rj-project/apple_weather/PartlyCloudyDay.png" />
+				<span>Partly Cloudy</span>
+				<div class="wcity"><a href="/weather" title="Weather Forecast">Boulder City, NV</a></div>
+			</div>
+
+			<form action="https://bouldercityreview.com/" class="search-form">
+				<input class="search-text" name="s" placeholder="search..." type="search">
+				<a class="search-icon" title="search icon" href="#">
+					<i class="fa fa-search" aria-hidden="true"></i>
+				</a>
+			</form>
+
+			<ul id="slide-menu" class="rj-slide-nav"><li id="menu-item-10" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-10"><a href="http://bouldercityreview.com/">Home</a></li>
+<li id="menu-item-23309" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-23309"><a href="https://bouldercityreview.com/./news/">News</a>
+<ul class="sub-menu">
+	<li id="menu-item-23317" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23317"><a href="https://bouldercityreview.com/./news/city-government/">City Government</a></li>
+	<li id="menu-item-23314" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23314"><a href="https://bouldercityreview.com/./news/public-safety/">Public Safety</a></li>
+	<li id="menu-item-23318" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23318"><a href="https://bouldercityreview.com/./news/lake-mead-hoover-dam/">Lake Mead/Hoover Dam</a></li>
+</ul>
+</li>
+<li id="menu-item-23310" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-23310"><a href="https://bouldercityreview.com/./community/">Community</a></li>
+<li id="menu-item-23311" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-23311"><a href="https://bouldercityreview.com/./sports/">Sports</a>
+<ul class="sub-menu">
+	<li id="menu-item-23316" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23316"><a href="https://bouldercityreview.com/./sports/recreation/">Recreation</a></li>
+	<li id="menu-item-23315" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23315"><a href="https://bouldercityreview.com/./sports/high-school/">High School</a></li>
+	<li id="menu-item-23659" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23659"><a target="_blank" href="https://www.reviewjournal.com/nevada-preps/">Nevada Preps</a></li>
+</ul>
+</li>
+<li id="menu-item-23312" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-23312"><a href="https://bouldercityreview.com/./opinion/">Opinion</a>
+<ul class="sub-menu">
+	<li id="menu-item-23319" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23319"><a href="https://bouldercityreview.com/./opinion/editorials/">Editorials</a></li>
+	<li id="menu-item-23324" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23324"><a href="https://bouldercityreview.com/./opinion/letters/">Letters</a></li>
+</ul>
+</li>
+<li id="menu-item-23313" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23313"><a href="https://bouldercityreview.com/./entertainment/">Entertainment</a></li>
+<li id="menu-item-23607" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-23607"><a href="https://obituaries.bouldercityreview.com/">Obituaries</a>
+<ul class="sub-menu">
+	<li id="menu-item-66043" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-66043"><a href="https://obituaries.bouldercityreview.com/select-notice-type">Place an obituaries notice</a></li>
+</ul>
+</li>
+<li id="menu-item-52876" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-52876"><a href="https://bouldercityreview.com/media-index/">Videos</a></li>
+<li id="menu-item-23335" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23335"><a href="https://bouldercityreview.com/classifieds/">Classifieds</a></li>
+<li id="menu-item-23670" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23670"><a href="https://bouldercityreview.com/archive/">Archive</a></li>
+<li id="menu-item-53794" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53794"><a href="https://account.reviewjournal.com/Home?SiteCode=BCR">Subscribe</a></li>
+<li id="menu-item-56509" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56509"><a href="https://eedition.bouldercityreview.com/html5/reader/production/default.aspx?pubname=&#038;pubid=40de2c4b-7cc0-49af-aec9-2768d23e67dd">eEdition</a></li>
+<li id="menu-item-122861" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-122861"><a href="/pc">Partner Content</a></li>
+</ul>			
+			<div class="social_icons"><a href="https://www.facebook.com/bouldercityreview" target="_blank" aria-label="rj_social_facebook"><i aria-hidden="true" class="fa fa-facebook"></i></a><a href="https://twitter.com/bcreview" target="_blank" aria-label="rj_social_twitter"><img width="50" height="47" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,c_scale,w_50/v1690838126/rj-project/social_x_icon.png" class="icon-x" alt="icon-x" /></a><a href="/rss" target="_blank" aria-label="rj_social_rss"><i aria-hidden="true" class="fa fa-rss"></i></a></div>		</div><!-- #side-rail-nav -->
+	</header>
+
+	<!-- summit ads -->
+	<!-- begin region topsponsor -->
+		<!-- end region topsponsor -->
+
+	<div id="page" class="site">
+
+					<div id="rjth-region-top" class="widget-area rj-container-fluid no-padding">
+				<div id="rj_widget_text-78" class="rj-widget-num-1 rj-widget-first rj-widget-odd  rj-widget rj_widget_text">		<script>
+    if (typeof window.$ === 'undefined') {window.$ = window.jQuery;}
+    window.rj_newline = new RegExp("\n", "g");
+    
+    function getCookie(a) {
+        var cookies = document.cookie.split(';');
+        var cookie;
+        for (var i = 0; i < cookies.length; i++) {
+            cookie = cookies[i].trim();
+            if (cookie.startsWith(a + '=')) {
+                return cookie.substring(a.length + 1);
+            }
+        }
+    
+        return ''; 
+    }
+    function validateEmail(email) {
+        var v = /\S+@\S+\.\S+/;
+        return v.test(email);
+    }
+</script>		</div><div id="rj_widget_text-86" class="rj-widget-num-2 rj-widget-last rj-widget-even fixed-banner-top rj-widget rj_widget_text">		<style>
+:root {
+    --admin_h: 46px;
+    --rj_header: 60px;
+    --ad_w: 320px;
+    --ad_h: 50px;
+    --ad_margin_bot: 5px;
+}
+@media (min-width: 768px) {
+    :root {
+        --admin_h: 32px;
+        --rj_header: 133px;
+        --ad_w: 728px;
+        --ad_h: 90px;
+    }
+    body.menu-top-fixed {
+        --rj_header: 98px;
+    }
+}
+@media (min-width: 1200px) {
+    :root {
+        --ad_w: 1200px;
+        --ad_h: 70px;
+    }
+}
+
+body.wp-custom-logo {
+     padding-top: calc( var(--rj_header) + var(--ad_h) + var(--ad_margin_bot) );
+}
+body.admin-bar {
+    padding-top: calc( var(--rj_header) + var(--ad_h) + var(--ad_margin_bot) + var(--admin_h) );
+}
+.fixed-banner-top {
+    position: fixed;
+    z-index: 1035;
+    top: var(--rj_header);
+    left: 0;
+    width: 100%;
+    height: calc( var(--ad_h) + var(--ad_margin_bot) );
+    background-color: #fff;
+    overflow: hidden;
+}
+body.admin-bar .fixed-banner-top {
+    top: calc( var(--rj_header) + var(--admin_h) );
+}
+.fixed-ad-top a {
+    display: block;
+}
+.fixed-ad-top img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.fixed-ad-top {
+    width: var(--ad_w);
+    height: var(--ad_h);
+    margin: 0 auto;
+}
+@media (min-width: 768px) {
+    .fixed-banner-top {
+        width: calc( 100% - 40px );
+        margin: 0 20px;
+    }
+    body.admin-bar.menu-top-fixed {
+        padding-top: calc( var(--rj_header) + var(--ad_h) + var(--ad_margin_bot) + var(--admin_h) );
+    }
+}
+@media (min-width: 1240px) {
+    .fixed-banner-top {
+        width: 1200px;
+        margin: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+}
+
+body.rj-is-app-request .fixed-banner-top {top: 0;}
+body.rj-is-app-request {padding-top: 55px;}
+@media (min-width: 768px) {
+    body.rj-is-app-request .fixed-banner-top {top: 38px;}
+    body.rj-is-app-request,
+    body.rj-is-app-request.menu-top-fixed {padding-top: 133px;}   
+}   
+</style>
+<div class="fixed-ad-top">
+    <div id="ad-sticky_high_impact_1"></div>
+</div>		</div>			</div><!-- #rjth-region-top -->
+		
+		<div id="content" class="site-content">
+
+	<div id="rjth-region-above-article-content" class="rj-container-fluid">
+		<div class="widget-area rj-container">
+			<div id="rj_widget_text-61" class="rj-widget-num-1 rj-widget-first rj-widget-last rj-widget-odd  rj-widget rj_widget_text">		<div class="rj-ads-wrapper"><div id="ad-high_impact_1"></div></div>
+<style>@media screen and (min-width: 768px) {#ad-high_impact_1 {min-height: 250px; }}@media screen and (max-width: 767px) {#ad-high_impact_1 {width: 336px; height: 280px; margin: 20px auto 0; display: flex !important; justify-content: center; align-items: center; }}</style>
+
+<div class="separator-horizontal"></div>		</div>		</div>
+	</div><!-- #rjth-region-above-article-content -->
+
+	<div class="rj-container-fluid">
+		<div class="rj-post-post">
+			
+	
+												<div class="rj-container">
+						<ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+							<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+								<a itemprop="item" href="/">
+									<span itemprop="name">Home</span>
+								</a>
+								<meta itemprop="position" content="1" />
+							</li>
+																						<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+									<span class="separator">&gt;&gt;</span>
+									<a itemprop="item" href="https://bouldercityreview.com/news/">
+										<span itemprop="name">News</span>
+									</a>
+									<meta itemprop="position" content="2" />
+								</li>
+													</ul>
+					</div>
+					
+<div class="rj-container">
+
+	<div class="rj-zone">
+		<article id="post-131498" data-template="7"
+				 data-content-source="Local" class="rj-story rj-story-full has-image has-gallery has-gallery-pagination rj-story-full-7 has-right-sidebar post-131498 post type-post status-publish format-standard has-post-thumbnail hentry category-community category-news tag-mc-news rj-main-category--news rj-main-category-id--9">
+
+			<header class="entry-header">
+				
+			<div class="rj-field-main-category category-news">
+			<a href="https://bouldercityreview.com/news/">News</a>
+		</div>
+	
+<h1 class="entry-title">Judge halts construction of embattled Boulder City data center on public land</h1>
+<div class="post-excerpt" style="display: none;">
+	<p>In a win for city officials and environmentalists, an administrative judge agreed to prevent a Texas-based developer from building a data center on federal land &#8212; for now.</p>
+</div>
+			</header><!-- .entry-header -->
+
+							<div class="rj-gallery xslide">
+					<div class="xscreen">
+						<div class="xplayer">
+							<div class="xmedias">
+								<div class="rj-gallery-elem media-wrap" data-xs-type="image"><img width="1200" height="800" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg" class="media-content media-img skip-lazy" alt="The approximate site of a data center approval by the BLM south of the I-11 and west of US 95 o ..." decoding="async"srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-JUL15-26-015-copy.jpg?resize=900,600 900w" sizes="auto, (max-width: 1200px) 100vw, 1200px" /><div class="media-caption">The approximate site of a data center approval by the BLM south of the I-11 and west of US 95 on July 14, 2026. (L.E. Baskow/Las Vegas Review-Journal) @Left_Eye_Images</div></div><div class="rj-gallery-elem media-wrap" data-xs-type="image"><img width="1200" height="930" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-MAY22-26-2-.jpg" class="media-content media-img rj-lazy-load lazy-image" alt="The Boulder City data center project has remained controversial among residents, seen here prot ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-MAY22-26-2-.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-MAY22-26-2-.jpg?resize=516,400 516w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-MAY22-26-2-.jpg?resize=768,595 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-MAY22-26-2-.jpg?resize=1032,800 1032w" data-lazy-sizes="auto, (max-width: 1200px) 100vw, 1200px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22038009_web1_BC-DATA-CENTER-MAY22-26-2-.jpg?is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /><div class="media-caption">The Boulder City data center project has remained controversial among residents, seen here protesting outside of Boulder City Hall before a Planning Commission meeting. (Ron Eland/Boulder City Review)</div></div><div class="media-wrap" data-xs-type="related" data-xs-thumb="related"><div class="xrelated"><div class="xrelated-header">More Stories</div><div class="xrelated-items"><a class="xrelated-item" href="https://bouldercityreview.com/news/a-game-for-grayson-131502/"><div class="field-image"><img width="360" height="240" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1" class="field-img rj-lazy-load lazy-image" alt="Ron Eland/Boulder City Review Four-year-old Grayson Armstrong, with his parents, Jessica and Rh ..." decoding="async" fetchpriority="high" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=1200,800 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="(max-width: 360px) 100vw, 360px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></div><div class="field-title">A game for Grayson</div></a><a class="xrelated-item" href="https://bouldercityreview.com/news/city-accepts-faa-control-tower-funds-131495/"><div class="field-image"><img width="360" height="240" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1" class="field-img rj-lazy-load lazy-image" alt="Ron Eland/Boulder City Review A commercial tour plane taxis along the runway last week at the B ..." decoding="async" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="(max-width: 360px) 100vw, 360px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></div><div class="field-title">City accepts FAA control tower funds</div></a><a class="xrelated-item" href="https://bouldercityreview.com/news/eagles-record-shutout-in-home-opener-131492/"><div class="field-image"><img width="360" height="240" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1" class="field-img rj-lazy-load lazy-image" alt="Robert Vendettoli/Boulder City Review Running for a gain up the middle, Boulder City quarterbac ..." decoding="async" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="(max-width: 360px) 100vw, 360px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></div><div class="field-title">Eagles record shutout in home opener</div></a><a class="xrelated-item" href="https://bouldercityreview.com/news/lady-eagles-top-basic-democracy-prep-on-the-court-131489/"><div class="field-image"><img width="360" height="240" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1" class="field-img rj-lazy-load lazy-image" alt="Robert Vendettoli/Boulder Citry Review Going up for a big strike, Boulder City hitter Juliette ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 360px) 100vw, 360px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?w=360&amp;h=240&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></div><div class="field-title">Lady Eagles top Basic, Democracy Prep on the court</div></a></div></div></div>							</div>
+						</div>
+													<div class="xpagination"></div>
+											</div>
+				</div>
+			
+			<div class="entry-info-cont">
+				<div class="entry-info">
+					<div class="info-left">
+													<div class="rj-field-byline" >
+					By Alan Halaly Las Vegas Review-Journal				</div>
+										<div class="rj-field-published-time">
+					September 3, 2026 - 5:01 pm				</div>
+										</div>
+					<div class="rj-story-social">
+								<a class="share-facebook" aria-label="share-facebook" data-pretext="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbouldercityreview.com%2Fpost%2F131498" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbouldercityreview.com%2Fpost%2F131498"
+		   onclick="window.open(this.href, 'winpop', 'width=500,height=500'); return false;"><i aria-hidden="true" class="fa fa-facebook"></i></a>
+		<a class="share-twitter" aria-label="share-twitter" data-pretext="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbouldercityreview.com%2Fpost%2F131498&amp;via=%40bcreview" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbouldercityreview.com%2Fpost%2F131498&#038;via=%40bcreview&#038;text=Judge%20halts%20construction%20of%20embattled%20Boulder%20City%20data%20center%20on%20public%20land"
+		   onclick="window.open(this.href, 'winpop', 'width=500,height=500'); return false;">
+			<img width="50" height="47" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,c_scale,w_50/v1690838126/rj-project/social_x_icon_black.png" class="icon-x" alt="icon-x" />
+		</a>
+		<a class="share-email" aria-label="share-email" data-subject="[Shared Post] Judge halts construction of embattled Boulder City data center on public land" data-url="https://bouldercityreview.com/post/131498" data-sitename="Boulder City Review" href="mailto:?&subject=[Shared Post] Judge halts construction of embattled Boulder City data center on public land&body=You may be interested in the following post: https://bouldercityreview.com/post/131498"><i
+				aria-hidden="true" class="fa fa-envelope"></i></a>
+							</div>
+					<div class="rj-clear">&nbsp;</div>
+				</div><!-- .entry-info -->
+			</div><!-- .entry-info-cont -->
+
+			
+			<div class="entry-content">
+				<p>An administrative judge ruled in favor of Boulder City leaders and environmentalists on Tuesday, pausing the construction of a data center on public land near the city until an appeal can be fully processed.</p>
+<p>The Center for Biological Diversity, the Sierra Club and Boulder City officials took their fight to the Interior Board of Land Appeals in late July. They requested a stay to halt a Texas-based developer from using its federal permits &#8212; ones that the developer sought privately from the Bureau of Land Management while publicly courting favor from residents to support a city lease.</p>
+<p>In what many residents described as a backroom deal, the BLM awarded developer Townsite Solar 2 an amendment to an existing permit it held for a solar farm. The BLM&#8217;s Las Vegas field office determined the environmental review of the solar project was &#8220;substantially the same&#8221; and transferable to the data center, sparking outcry.</p>
+<p>&#8220;The two projects are fundamentally dissimilar in ways that affect the environment and require meaningful analysis under NEPA (the National Environmental Policy Act), yet BLM concluded that they are essentially alike,&#8221; Judge David Gunter wrote.</p>
+<p>Gunter wrote that the Townsite Solar 2 data center near the intersection of Interstate 11 and U.S. Highway 95 is the first permitted on BLM land, noting that the environmental harms of a data center have never been analyzed in any BLM document.</p>
+<p>One former BLM official told the Las Vegas Review-Journal that the approval was unprecedented and an unjust interpretation of federal law undertaken to comply with President Donald Trump&#8217;s 2025 executive order that directed agencies to speed up permitting for data centers on public land.</p>
+<p>&#8220;The Trump administration is pulling out all the stops to let tech companies build massive data centers on our public lands,&#8221; said Patrick Donnelly, Great Basin director at the Center for Biological Diversity, in a statement. &#8220;This tremendous victory proves communities have the power to fight back and win.&#8221;</p>
+<p>A Boulder City spokeswoman wrote in a statement that city officials continue to believe the BLM failed to adequately consult them or the public, as required by federal law, before the data center&#8217;s approval.</p>
+<p>Developer Townsite Solar 2 said in a statement that executives respect the board&#8217;s decision and will keep engaging with the BLM, Boulder City and other stakeholders to see the project through.</p>
+<p>&#8220;Since the beginning, TS2 has committed to responsible development on public land and will conduct a comprehensive environmental review to evaluate project impacts, confirm compliance with federal standards and provide clear information to the community,&#8221; the statement said.</p>
+<p>The Interior Department, the parent agency of the BLM, declined to comment.</p>
+<p>Could a pause kill the project?</p>
+<p>In the ruling, Gunter referenced a declaration from the developer that said granting a stay would &#8220;materially damage the perception of this project in the market&#8221; and &#8220;put pressure on [Townsite] to abandon the project.&#8221;</p>
+<p>Gunter wrote that Boulder City&#8217;s potential loss of an estimated $2.3 million in annual tax revenue outweighed any temporary harm the company may suffer during the delay.</p>
+<p>Data centers and their impacts on communities are likely to be debated during the Nevada Legislature&#8217;s 2027 session. An interim committee agreed last month to draft a bill to consider a statewide pause on data center projects and a rollback of Nevada&#8217;s generous tax abatement program for those facilities.</p>
+<p>Gov. Joe Lombardo, whose office did not reply to a request for comment on Tuesday, has said the tax break that the state previously awarded Townsite Solar 2 for a solar project cannot be transferred to the data center.</p>
+<p>Boulder City, one of the only cities with its own public utility provider, has raised concerns about the strain a data center requiring 167 megawatts &#8212; more than three times the city&#8217;s peak energy demand &#8212; could place on the energy grid. The developer planned to buy energy through the open market, not the city, and use backup diesel or natural gas generators for emergencies.</p>
+<p>The facility would use a closed-loop system to cool its servers and comply with the Southern Nevada Water Authority&#8217;s ban on evaporative cooling systems.</p>
+<p>A stay may not matter much if the company and land managers are committed to getting the project off the ground, said Ethan Blevins, a senior legal fellow at the Pacific Legal Foundation, a libertarian nonprofit public-interest law firm. Judges often give wide deference to the BLM on issues related to environmental review, Blevins said.</p>
+<p>&#8220;The BLM could just go back and supplement the environmental assessment, run another comment period, then go forward regardless of local opposition,&#8221; Blevins said. &#8220;BLM&#8217;s discretion on these matters is near absolute, so much so that courts often refuse to even review BLM judgment calls under its multiple-use mandate.&#8221;</p>
+<p>Whether a stay leads to any real action in preventing construction altogether remains to be seen.</p>
+<p>Rep. Dina Titus, D-Nev., who represents Boulder City in Congress, praised the judge&#8217;s decision in a Tuesday statement.</p>
+<p>&#8220;The judge ruled for transparency and public accountability in granting a stay based on the BLM&#8217;s misuse of an environmental impact statement for a solar farm as justification for a data center,&#8221; Titus said. &#8220;I&#8217;ve said since day one that this was not only improper but illegal.&#8221;</p>
+<p>Contact Alan Halaly at ahalaly@reviewjournal.com. Follow @AlanHalaly on X.</p>
+				<div class="rj-content-last-elem"></div>
+			</div><!-- .entry-content -->
+			<div class="rj-isidebar"></div>
+
+			<footer class="entry-footer"  style="display: none;" >
+	<span class="tags-links cat-links">Posted on: <a href="https://bouldercityreview.com/./community/" rel="category tag">Community</a>, <a href="https://bouldercityreview.com/./news/" rel="category tag">News</a></span><br/><span class="tags-links">Tagged: <a href="https://bouldercityreview.com/tag/mc-news/" rel="tag">mc-news</a></span><br/></footer><!-- .entry-footer -->
+
+			
+		</article><!-- #post-## -->
+
+		<div class="separator-vertical"></div>
+
+		<div id="rj-region-sidebar-1" class="widget-area rj-region rj-right-side">
+			<div id="rj_widget_text-54" class="rj-widget-num-1 rj-widget-first rj-widget-odd  rj-widget rj_widget_text">		<div class="rj-ads-wrapper" style="min-height:600px;">
+  <div id="ad-infeed_1x2_1"></div>
+</div>		</div><div id="rj_widget_text-84" class="rj-widget-num-2 rj-widget-even  rj-widget rj_widget_text">		<div class="separator-horizontal"></div>
+<div class="rj-gutter-mobile">
+    <div id="most-read-widget-js-sdk" class="rj-most-view" style="min-height:460px;">
+        <div class="rj-widget-title">MOST READ</div>
+        <div id="most-read-marfeel"></div>
+    </div>
+    <div id="mva-cont"></div>  
+</div>
+<div class="separator-horizontal"></div>		</div><div id="rj_widget_text-87" class="rj-widget-num-3 rj-widget-odd  rj-widget rj_widget_text">		<style>
+    .invis-text {
+        display: inline-block;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        position: absolute;
+        color: #fff;
+        z-index: -1;
+    }
+
+    #mva .f-title {
+        font-family: urw-form, sans-serif;
+        font-weight: 900;
+    }
+
+    #most-view-audio {
+        min-height: 80px;
+    }
+
+    a.mva-sponsor {
+        display: block;
+        font-family: urw-form, sans-serif;
+        font-weight: 200;
+        margin: 10px 0 20px;
+        font-size: 14px;
+        color: #000;
+    }
+
+    .mva-sponsor .f-logo {
+        display: block;
+        margin: 0 0 10px;
+        width: 250px;
+        height: auto;
+    }
+
+    .mva-sponsor .f-logo.h-80 {
+        height: 80px;
+        width: auto;
+    }
+
+    .mva-sponsor .f-name {
+        font-weight: 900;
+    }
+</style>
+<a class="mva-sponsor" style="display:none;" href="https://bchcares.org/?utm_source=bcr_most_read&utm_medium=logoclicks" rel="nofollow noopener" target="_blank">
+    <img class="f-logo rj-lazy-load lazy-image" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,c_scale,w_300/v1753222933/webdev/bouldercity_hospital_v2.png" width="300" height="55" alt="sponsor logo" data-lazy-src="https://res.cloudinary.com/review-journal/image/upload/f_auto,c_scale,w_300/v1753222933/webdev/bouldercity_hospital_v2.png?is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><noscript><img class="f-logo" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,c_scale,w_300/v1753222933/webdev/bouldercity_hospital_v2.png" width="300" height="55" alt="sponsor logo" /></noscript>
+    <span>Sponsored By </span><span class="f-name">Boulder City Hospital</span>
+</a>
+<div id="mva" class="rj-lazy-load lazy-script">
+    <div class="f-title">LISTEN TO THE TOP FIVE HERE</div>
+    <div id="most-view-audio"></div>
+    <div id="most-view-text" class="invis-text"></div>
+</div>
+
+<script>
+    (function ($) {
+        var env = '';
+        var section = '';
+        var sub_section_1 = '';
+        var ad_targetting = {};
+
+        var show_sponsor_logo = false;
+
+        var pathname = window.location.pathname;
+        var trinity_player_id = '';
+        var intro_text = 'Most read articles';
+
+        var mv_story_data;
+        var mv_p_num = 3;
+
+
+        if (rj_ads_info) {
+            if (rj_ads_info.env) {
+                env = rj_ads_info.env;
+            }
+
+            if (rj_ads_info.section && rj_ads_info.section[0]) {
+                section = rj_ads_info.section[0];
+                if ('production' !== env) {
+                    section += '2';
+                }
+                ad_targetting.section = section;
+            }
+            if (rj_ads_info.child && rj_ads_info.child[0]) {
+                sub_section_1 = rj_ads_info.child[0];
+                if ('production' !== env) {
+                    sub_section_1 += '2';
+                }
+                ad_targetting.sub_section_1 = sub_section_1;
+            }
+        }
+
+        trinity_player_id = '2900022156';
+        /*
+        if ('production' !== env) {
+            trinity_player_id = '2900018590';
+        }
+        */
+        var first_path = '';
+        if ('/' === pathname) {
+            first_path = '/';
+        }
+        /*
+        if (pathname.startsWith('/business/')) {
+            first_path = '/business/';
+        }
+        */
+
+        window.current_date_obj = get_date_obj(); 
+        window.current_dt = get_current_dt(); 
+        
+        switch (first_path) {
+            /*
+            case '/':
+                intro_text = 'Most read articles are brought to you by One Nevada Credit Union.';
+                show_sponsor_logo = true;
+                break;
+          
+            case '/business/':
+                intro_text = 'Most read articles are brought to you by Regus.';
+                $('.mva-sponsor').attr('href', 'https://www.regus.com/en-us/united-states/nevada/las-vegas?dclid=CL6-gpzw-IsDFRua7gEdYsQQqw&utm_source=digital_press&utm_medium=localtoolkit&utm_campaign=Geo_Las_Vegas_Relaunch_Las_Vegas_Review_Journal_Newsletter&utm_id=18264&utm_content=most+read');
+                $('.mva-sponsor .f-name').text('REGUS');
+                $('.mva-sponsor .f-logo').attr({
+                    'src': 'https://res.cloudinary.com/review-journal/image/upload/f_auto,q_auto,c_scale,w_250/v1737739509/webdev/regus.png',
+                    'width': '250',
+                    'height': '140'
+                }).addClass('h-80');
+                show_sponsor_logo = true;
+                break; 
+            */
+            default:
+                _check = check_schedule('2025-07-31_00:00', '2030-01-01_00:00');
+                //console.log('_rjcheck_'+ window.current_dt, _check);
+                if ( _check.enable ) {
+                    intro_text = "Most Read Articles are brought to you by Boulder City Hospital. We're here for you, when you need us.";
+                    show_sponsor_logo = true;
+                }
+        }
+        
+
+        console.log('rjt_playerid:' + trinity_player_id + '_path:' + pathname + '_adtargetting:', ad_targetting);
+
+        if (show_sponsor_logo) {
+            $('.mva-sponsor').insertAfter('#most-read-widget-js-sdk .rj-widget-title').show(); //.rj-most-view:eq(0)
+        }
+
+        if ($('#mva-cont').length > 0) {
+            $('#mva').appendTo('#mva-cont');
+            //wp_api();
+        }
+
+        var mmr_ready = false;
+        var mmr_count = 100;
+        var mmr_story = 0;
+        var mmr_tmr;
+
+        document.getElementById('mva').addEventListener('rj-lazy-load-handle', function (e) {
+            mmr_tmr = setInterval(function () {
+                mmr_count--;
+                mmr_story = $('#most-read-widget-js-sdk .mv-story').length;
+                //console.log('rjt_mmr_c:'+mmr_count+'_story:'+mmr_story);
+                if (mmr_story > 0) {
+                    clearInterval(mmr_tmr);
+                    wp_api();
+                }
+                if (mmr_count <= 0) {
+                    clearInterval(mmr_tmr);
+                }
+            }, 100);
+        });
+
+        function wp_api() {
+            var post_ids = [];
+            var url, last_path, post_id;
+
+            $('#most-read-widget-js-sdk .mv-story').each(function () { //.rj-most-view:eq(0)
+                post_id = $(this).attr('data-post-id');
+                if (post_id) {
+                    post_ids.push(post_id);
+                } else {
+                    url = $(this).attr('href');
+                    url = url.split('/');
+                    last_path = url[url.length - 2]; //the last one is query parameter
+                    last_path = last_path.split('-');
+                    post_id = last_path[last_path.length - 1];
+                    post_id = post_id.replace(/[^0-9]/g, '');
+                    console.log('rjt_mmr_post_id:' + post_id);
+
+                    $(this).attr('data-post-id', post_id);
+                    if (post_id) {
+                        post_ids.push(post_id);
+                    }
+                }
+            });
+
+            var end_point = '/wp-json/wp/v2/posts';
+            var param = 'include=' + post_ids.join(',');
+
+            var u = '/wp-json/rj/v2/api?name=site-wp-json&end_point=' + end_point + '&param=' + encodeURIComponent(param);
+
+            console.log('rjt_mva_u:' + u);
+            $.ajax({
+                type: 'GET',
+                url: u,
+                cache: true,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == '1' && typeof (response.response) !== 'undefined') {
+                        get_story_data(response.response);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log('_xhr.status:' + xhr.status + '_error:' + thrownError);
+
+                }
+            });
+        }
+
+        function get_story_data(data) {
+            var i, d, cont;
+            mv_story_data = {};
+
+            for (i = 0; i < data.length; i++) {
+                d = data[i];
+                console.log('rjt_mva_id:' + d['id']);
+                cont = find_tag(d['content']['rendered'], '<p>', '</p>', mv_p_num);
+                mv_story_data['id_' + d['id']] = cont;
+
+            }
+
+            //console.log(mv_story_data);
+            insert_hidden_text();
+        }
+
+        function insert_hidden_text() {
+            var story_total = $('#most-read-widget-js-sdk .mv-story').length; //.rj-most-view:eq(0)
+            var i = 0;
+            var id;
+            var mv_text = '';
+
+            //mv_text += '<div class="mva-item">' + $('.rj-most-view:eq(0) .rj-widget-title').text() + '.</div>';
+            if (intro_text) {
+                mv_text += '<div class="mva-item">' + intro_text + '</div>';
+            }
+
+            $('#most-read-widget-js-sdk .mv-story').each(function () {// .rj-most-view:eq(0)
+                i++;
+                id = $(this).attr('data-post-id');
+                mv_text += '<div class="mva-item">';
+                mv_text += '<p>number' + i + '. ' + $(this).find('.field-title').text() + '.</p>';
+                if (id && mv_story_data['id_' + id]) {
+                    mv_text += mv_story_data['id_' + id];
+                }
+
+                if (i < story_total) {
+                    mv_text += '<p>next story.</p>';
+                }
+                mv_text += '</div>';
+            });
+
+            $('#most-view-text').html(mv_text);
+
+            render_audio_player();
+        }
+
+        function render_audio_player() {
+            var textSelector;
+            var js;
+
+            textSelector = '#most-view-text'; //'.rj-most-view';
+            js = document.createElement('script');
+            js.type = 'text/javascript';
+            js.setAttribute('fetchpriority', 'high');
+            js.setAttribute('charset', 'UTF-8');
+            js.setAttribute('data-player-id', 'player-most-view');
+            js.src = 'https://trinitymedia.ai/player/trinity/' + trinity_player_id + '/';
+
+            js.src += '?textSelector=' + encodeURIComponent(btoa(textSelector));
+            if (ad_targetting.hasOwnProperty('section')) {
+                //js.src += '&cms='+encodeURIComponent(JSON.stringify(ad_targetting)); 
+                js.src += '&g_cust_params=' + encodeURIComponent('section=' + ad_targetting.section);
+                if (ad_targetting.hasOwnProperty('sub_section_1')) {
+                    js.src += encodeURIComponent('&sub_section_1=' + ad_targetting.sub_section_1);
+                }
+            }
+            document.getElementById("most-view-audio").appendChild(js);
+        }
+
+        function find_tag(html, begin_tag, end_tag, num) {
+            var result = '';
+            var cont = '';
+            var c = 0;
+            var pos_begin, pos_end;
+            pos_begin = html.indexOf(begin_tag, 0);
+
+            while ((pos_begin > -1) && (c < num)) {
+                pos_end = html.indexOf(end_tag, (pos_begin + begin_tag.length));
+
+                if (pos_end > -1) {
+                    cont = html.substring(pos_begin, (pos_end + end_tag.length));
+                    //console.log('rjt_mva_cont_ori:'+cont);
+                    cont = cont.replace(/<[^>]*>?/gm, '');
+                    cont = cont.replace(/&amp;/g, '&');
+                    cont = cont.replace(/&#231;/g, 'ç');
+                    cont = cont.replace(/&#8212;|&#8216;|&#8217;|&#8220;|&#8221;|&#9670;|‘|’|“|”/g, '');
+                    cont = cont.replace(/\s\s+/g, ' ');
+                    cont = cont.trim();
+                    //console.log('rjt_mva_cont_clean:'+cont+'|');
+
+                    if (cont != '') {
+                        c++;
+                        result += begin_tag + cont + end_tag;
+                    }
+
+                    pos_begin = html.indexOf(begin_tag, (pos_end + end_tag.length));
+                } else {
+                    result += html.substring(pos_begin);
+                }
+            }
+
+            return result;
+        }
+
+
+        function get_date_obj() {
+            var q_str = new URLSearchParams(window.location.search);
+            var dt = q_str.get('dt');
+            var cdate;
+            if (dt) {
+                cdate = new Date(dt);
+            } else {
+                cdate = new Date();
+            }
+            return cdate;
+        }
+        function get_current_dt() {
+            var cdate = window.current_date_obj; //fuel_date_obj
+            //d.toLocaleString(); //"2/1/2013 7:37:08 AM"
+            var y = cdate.getFullYear();
+            var m = cdate.getMonth();
+            var d = cdate.getDate();
+            var h = cdate.getHours();
+            var i = cdate.getMinutes();
+            var s = cdate.getSeconds();
+            window.current_day  = cdate.getDay(); //0-6 | Sun-Sat //fuel_cday
+         
+            m++;
+            m = add_pre_zero(m);
+            d = add_pre_zero(d);
+            h = add_pre_zero(h);
+            i = add_pre_zero(i);
+            s = add_pre_zero(s);
+            return y+'-'+m+'-'+d+'_'+h+':'+i+':'+s; 
+        }
+        function add_pre_zero(n) {
+            if (n < 10) {
+                n = '0' + n;
+            } 
+            return n;
+        }
+        function check_schedule(start, stop) {
+            var resp = {'enable':false, 'start':start, 'stop':stop};
+
+            var date_pattern = /\d{4}-\d{2}-\d{2}/; // ^
+            var tmp, start_date, start_time, stop_date, stop_time;
+
+            start = start.toLowerCase();
+
+            if (date_pattern.test(start)) {
+                //range 
+                //start = 2023-12-24_07:00 | stop = 2023-12-25_09:30
+                tmp = start.split('_');
+                start_date = tmp[0];
+                if (tmp.length == 1) {
+                    start_time = '00:00:00';
+                } else {
+                    start_time = tmp[1];
+                    start_time = normalize_time(start_time);
+                }
+                
+                start = start_date + '_' + start_time;
+
+                tmp = stop.split('_');
+                stop_date = tmp[0];
+                if (tmp.length == 1) {
+                    stop_time = '00:00:00';
+                } else {
+                    stop_time = tmp[1];
+                    stop_time = normalize_time(stop_time);
+                }
+
+                stop = stop_date + '_' + stop_time;
+                
+                if (window.current_dt >= start && window.current_dt < stop) { //fuel_cdt
+                    resp.enable  = true;
+                }
+
+                resp.start = start;
+                resp.stop = stop;
+                return resp;
+
+            } else {
+                //pattern
+                //start = wed_17:00,thu,fri,sat_00:00-06:00 | stop = y-01-01,y-12-25
+                var tmp = window.current_dt.split('_'); //fuel_cdt
+                var cdate = tmp[0];
+                var ctime = tmp[1];
+
+                if (stop) {
+                    if (stop.includes('pause')) {
+                        return resp;
+                    }
+                    var cyear = window.current_date_obj.getFullYear(); //fuel_date_obj
+                    stop = stop.replace(/y/g, cyear);
+                    resp.stop = stop;
+
+                    var stop_arr = stop.split(',');
+                    if (stop_arr.includes(cdate)) {
+                        return resp;
+                    }
+                }
+
+                var start_obj = normalize_day_pattern(start);
+                var d_index = start_obj.d.indexOf(window.current_day); //fuel_cday
+                //console.log('d_index:'+d_index);
+                if ( d_index === -1 ) {
+                    return resp;
+                }
+                //console.log('ctime:'+ctime+'_'+start_obj.begin[d_index]+'_'+start_obj.end[d_index]);
+                if (ctime >= start_obj.begin[d_index] && ctime <=  start_obj.end[d_index]) {
+                    resp.enable  = true;
+                }
+                return resp;
+
+            }
+
+        }
+        function normalize_time(str) {
+            var tmp = str.split(':');
+            if (tmp.length == 1) {
+                tmp.push('00');
+            }
+            if (tmp.length == 2) {
+                tmp.push('00');
+            }
+            return tmp[0]+':'+tmp[1]+':'+tmp[2];
+        }
+        function replace_days_with_num(str) {
+            var day_mapping = {
+                'sun': 0,
+                'mon': 1,
+                'tue': 2,
+                'wed': 3,
+                'thu': 4,
+                'fri': 5,
+                'sat': 6
+            };
+
+            // Use a regular expression with a callback function to perform the replacement
+            var result = str.replace(/(sun|mon|tue|wed|thu|fri|sat)/gi, function(match, day) {
+                return day_mapping[day]; //day.toLowerCase()
+            });
+
+            return result;
+        }
+        function normalize_day_pattern(str) {
+            var i, tmp, d, t, t_begin, t_end;
+            var arr = replace_days_with_num(str).split(',');
+            var d_arr = [];
+            var begin_arr = [];
+            var end_arr = [];
+            for (i=0; i<arr.length; i++) {
+                tmp = arr[i].trim().split('_');
+                if (tmp.length == 1) {
+                    tmp.push('00:00:00-23:59:59');
+                }
+                d = parseInt(tmp[0]);
+                if (isNaN(d)) {
+                    d = -1;
+                }
+                t = tmp[1];
+                tmp = t.split('-');
+                if (tmp.length == 1) {
+                    tmp.push('23:59:59');
+                }
+                t_begin = normalize_time(tmp[0]);
+                t_end = normalize_time(tmp[1]);
+
+                d_arr.push(d);
+                begin_arr.push(t_begin);
+                end_arr.push(t_end);
+            }
+
+            var obj = {'d':d_arr, 'begin':begin_arr, 'end':end_arr};
+            //console.log('rj_day_pattern', obj);
+            return obj;
+        }
+    })(jQuery);
+</script>		</div><div id="rj_widget_text-56" class="rj-widget-num-4 rj-widget-last rj-widget-even xsticky-flex rj-widget rj_widget_text">		<div class="rj-ads-wrapper" style="overflow:visible; min-height:300px;"><div id="ad-sidebar_1"></div></div>		</div>		</div><!-- #rj-region-sidebar-1 -->
+
+	</div><!-- rj-zone -->
+</div>
+		</div><!-- rj-post-post -->
+	</div><!-- rj-post-container -->
+
+	<template id="rjth-region-insert-content" class="widget-area">
+		<div id="rj_widget_text-83" class="rj-widget-num-1 rj-widget-first rj-widget-odd tpl-7_p-0 rj-widget rj_widget_text">		<div id="story-audio-cont" class="rj-lazy-load lazy-script" style="max-width:840px; min-height:80px; margin:0 auto;"></div>
+<script>
+    document.getElementById('story-audio-cont').addEventListener('rj-lazy-load-handle', function(e) {
+        var elem =  document.querySelector('article.rj-story-full');
+        if (elem !== null && !elem.classList.contains('tag-no-trinity')) {
+            add_trinity_audio();
+        }
+
+        function add_trinity_audio() {
+            //var textSelector = '.rj-story-full .entry-content';
+            var js = document.createElement('script');
+            js.type = 'text/javascript';
+            js.setAttribute('fetchpriority', 'high');
+            js.setAttribute('data-player-id', 'story-audio');
+            js.src = 'https://trinitymedia.ai/player/trinity/2900009589/';
+            js.src += '?pageURL=' + encodeURIComponent(window.location.href);
+            //js.src += '?textSelector=' + encodeURIComponent(btoa(textSelector));
+            document.getElementById("story-audio-cont").appendChild(js);
+        }
+    }); 
+</script>		</div><div id="rj_widget_text-73" class="rj-widget-num-2 rj-widget-even tpl-1_p-3 tpl-7_p-3 rj-widget rj_widget_text">		<div id="stn-in-article-player" class="stn-wrapper rj-gutter-mobile rj-lazy-load lazy-script"></div>
+<script>
+document.getElementById('stn-in-article-player').addEventListener('rj-lazy-load-handle', function(e) {
+    $ = jQuery;
+    var stnInArticleVideo = {
+        wrapper: null,
+        canInsertVideo: function() {
+            return !(stnInArticleVideo.excludePage() || stnInArticleVideo.hasEmbed());
+        },
+        excludePage: function() {
+            var i, result = false, checkClasses = ['tag-rj-has-vdo', 'tag-no-stn', 'tag-livestream'];
+            for (i = 0; i < checkClasses.length; i++) {
+                if (stnInArticleVideo.wrapper.hasClass(checkClasses[i])) {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        },
+        hasEmbed: function() {
+            return stnInArticleVideo.wrapper.find('.s2nPlayer').length > 0;
+        },
+        insertVideo: function(fkId) {
+            var elem = $('#stn-in-article-player');
+            var pHtml = $("<div class='s2nPlayer k-" + fkId + "' data-type='float' style='margin: 10px 0;'></div>");
+            var pScript = document.createElement("script");
+            pScript.type = 'text/javascript';
+            pScript.src = '//embed.sendtonews.com/player3/embedcode.js?fk=' + fkId + '&cid=5945&offsetx=0&offsety=0&floatwidth=400&floatposition=bottom-left';
+            pScript.async = true;
+            pScript.setAttribute('data-type', 's2nScript'); //pScript['data-type'] = 's2nScript';
+            elem.append(pHtml);
+            elem.append(pScript);
+        },
+        getVideoId: function() {
+            var fkId = false, 
+            videoIDs = {
+                'tag-coronavirus': {'id': 'u37v495p'},
+                'tag-mc-news': {'id': 'pCyFtg5f'},
+                'tag-mc-entertainment': {'id': 'YBuF2XdP'},
+                'tag-mc-sports': {'id': 'dbx2WkwF'}
+            };
+            for (var checkClass in videoIDs) {
+                if (stnInArticleVideo.wrapper.hasClass(checkClass)) {
+                    fkId = videoIDs[checkClass].id;
+                    break;
+                }
+            }
+            return fkId;
+        },
+        run: function() {
+            stnInArticleVideo.wrapper = $('article.rj-story.rj-story-full');
+            if (stnInArticleVideo.wrapper && stnInArticleVideo.canInsertVideo()) {
+                var fkId = stnInArticleVideo.getVideoId();
+                if (fkId) {
+                    stnInArticleVideo.insertVideo(fkId);
+                }
+            }
+        }
+    };
+    stnInArticleVideo.run();
+});
+</script>		</div><div id="rj_widget_text-40" class="rj-widget-num-3 rj-widget-odd tpl-7_p-7 tpl-1_p-7 rj-widget rj_widget_text">		<div id="nativo_article"></div>		</div><div id="rj_widget_text-15" class="rj-widget-num-4 rj-widget-even tpl-7_p-10 tpl-1_p-10 tpl-2_p-8 tpl-4_p-10 rj-widget rj_widget_text">		<div style="clear: both; text-align: center; margin-top: 10px;"><div id="ad-in_article_1" class="rj-lazy-ad"></div></div>		</div><div id="rj_widget_text-16" class="rj-widget-num-5 rj-widget-last rj-widget-odd tpl-7_p-17 tpl-1_p-17 tpl-2_p-13 tpl-4_p-17 rj-widget rj_widget_text">		<div style="clear: both; text-align: center; margin-top: 10px;"><div id="ad-in_article_2" class="rj-lazy-ad"></div></div>		</div>	</template><!-- #rjth-region-insert-content -->
+
+	<div id="rjth-region-under-article-content" class="rj-container-fluid">
+		<div class="widget-area rj-container">
+			<div class="row no-gutter rj-row-margin-7-9">
+				<div id="rj_widget_text-20" class="rj-widget-num-1 rj-widget-first rj-widget-odd max-width rj-widget rj_widget_text">		<div class="separator-horizontal"></div>
+<div class="rj-ads-wrapper"><div id="ad-high_impact_4"></div></div>
+<div class="separator-horizontal"></div>		</div><div id="rj_widget_render_posts-34" class="rj-widget-num-2 rj-widget-even latest-news rj-gutter-mobile rj-widget rj_widget_render_posts"><div class="rj-widget-title">THE LATEST</div>					<div class="rj-story-latest-news-wrap ">
+					<article id="post-131502" data-post-id="131502" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131502 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-sports tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/a-game-for-grayson-131502/" aria-label="A game for Grayson" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="Ron Eland/Boulder City Review Four-year-old Grayson Armstrong, with his parents, Jessica and Rh ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=1200,800 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036127_web1_BCR-Grayson1-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/a-game-for-grayson-131502/" rel="bookmark">A game for Grayson</a></div>		<div class="field-info">
+										<div class="field-byline">By Ron Eland Boulder City Review</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-09-03T17:01:27-07:00" style="display: none;">September 3, 2026 - 5:01 pm</time><time class="entry-date updated" datetime="">September 3, 2026 - 5:01 pm</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>Years from now, the coaches and players on the Boulder City High School varsity football team won&#8217;t remember the score of last Friday&#8217;s home game. They won&#8217;t remember how many yards they ran for or the number of tackles they tallied.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131495" data-post-id="131495" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131495 post type-post status-publish format-standard has-post-thumbnail hentry category-city-government category-news tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/city-accepts-faa-control-tower-funds-131495/" aria-label="City accepts FAA control tower funds" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="Ron Eland/Boulder City Review A commercial tour plane taxis along the runway last week at the B ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22036459_web1_BCR-airport-hangar-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/city-accepts-faa-control-tower-funds-131495/" rel="bookmark">City accepts FAA control tower funds</a></div>		<div class="field-info">
+										<div class="field-byline">By Ron Eland Boulder City Review</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-09-03T17:01:03-07:00" style="display: none;">September 3, 2026 - 5:01 pm</time><time class="entry-date updated" datetime="">September 3, 2026 - 5:01 pm</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>Things are moving full steam ahead on the planned air traffic control tower at the Boulder City Airport.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131492" data-post-id="131492" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131492 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-sports tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/eagles-record-shutout-in-home-opener-131492/" aria-label="Eagles record shutout in home opener" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="Robert Vendettoli/Boulder City Review Running for a gain up the middle, Boulder City quarterbac ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037967_web1_BCR-football-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/eagles-record-shutout-in-home-opener-131492/" rel="bookmark">Eagles record shutout in home opener</a></div>		<div class="field-info">
+										<div class="field-byline">By Robert Vendettoli Boulder City Review</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-09-03T17:00:52-07:00" style="display: none;">September 3, 2026 - 5:00 pm</time><time class="entry-date updated" datetime="">September 3, 2026 - 5:00 pm</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>Starting the Chris Render era off strong, Boulder City High School football defeated Eldorado 21-0 on Aug. 28, to give their head coach a debut victory.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131489" data-post-id="131489" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131489 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-sports tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/lady-eagles-top-basic-democracy-prep-on-the-court-131489/" aria-label="Lady Eagles top Basic, Democracy Prep on the court" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="Robert Vendettoli/Boulder Citry Review Going up for a big strike, Boulder City hitter Juliette ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/09/22037871_web1_BCR-volleyball-SEP3-26.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/lady-eagles-top-basic-democracy-prep-on-the-court-131489/" rel="bookmark">Lady Eagles top Basic, Democracy Prep on the court</a></div>		<div class="field-info">
+										<div class="field-byline">By Robert Vendettoli Boulder City Review</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-09-03T17:00:41-07:00" style="display: none;">September 3, 2026 - 5:00 pm</time><time class="entry-date updated" datetime="">September 3, 2026 - 5:00 pm</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>Starting league play off strong, Boulder City School girls volleyball defeated Democracy Prep 3-0 on Aug. 27.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131487" data-post-id="131487" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131487 post type-post status-publish format-standard hentry category-news category-opinion tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/its-all-about-first-impressions-131487/" aria-label="It’s all about first impressions" rel="bookmark">
+														<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?w=210&amp;h=140&amp;crop=1" class="post-img field-img rj-lazy-load lazy-image" alt="bcr default image" decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png 1200w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=768,513 768w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/its-all-about-first-impressions-131487/" rel="bookmark">It’s all about first impressions</a></div>		<div class="field-info">
+										<div class="field-byline">By Mayor Joe Hardy</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-09-03T17:00:30-07:00" style="display: none;">September 3, 2026 - 5:00 pm</time><time class="entry-date updated" datetime="">September 3, 2026 - 5:00 pm</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>When I was younger, my parents instilled in me the importance of making a good first impression. Look people in the eye. Make sure you give a firm handshake. Focus on what they are saying and don&#8217;t be distracted.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131485" data-post-id="131485" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131485 post type-post status-publish format-standard hentry category-news category-opinion tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/theres-something-about-a-new-school-year-131485/" aria-label="There’s something about a new school year" rel="bookmark">
+														<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?w=210&amp;h=140&amp;crop=1" class="post-img field-img rj-lazy-load lazy-image" alt="bcr default image" decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png 1200w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=768,513 768w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/theres-something-about-a-new-school-year-131485/" rel="bookmark">There’s something about a new school year</a></div>		<div class="field-info">
+										<div class="field-byline">By Amy Wagner Principal, BCHS</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-09-03T17:00:19-07:00" style="display: none;">September 3, 2026 - 5:00 pm</time><time class="entry-date updated" datetime="">September 3, 2026 - 5:00 pm</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>There is just something about the beginning of a new school year.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131458" data-post-id="131458" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131458 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-sports tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/cross-county-runners-look-to-improve-this-season-131458/" aria-label="Cross county runners look to improve this season" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="Robert Vendettoli/Boulder City Review Boulder City High School cross country runners Zoey Hayes ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?resize=1200,800 1200w, https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/08/22012807_web1_BCR-cross-country-AUg27-26.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/cross-county-runners-look-to-improve-this-season-131458/" rel="bookmark">Cross county runners look to improve this season</a></div>		<div class="field-info">
+										<div class="field-byline">By Robert Vendettoli Boulder City Review</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-08-28T08:32:42-07:00" style="display: none;">August 28, 2026 - 8:32 am</time><time class="entry-date updated" datetime="">August 28, 2026 - 8:32 am</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>Bringing back a handful of runners who made the 3A state meet a season ago, there&#8217;s an optimistic outlook for Boulder City High School cross country this upcoming season.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131456" data-post-id="131456" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131456 post type-post status-publish format-standard hentry category-news category-opinion tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/september-offers-something-for-everyone-at-boulder-city-library-131456/" aria-label="September offers something for everyone at Boulder City Library" rel="bookmark">
+														<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?w=210&amp;h=140&amp;crop=1" class="post-img field-img rj-lazy-load lazy-image" alt="bcr default image" decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png 1200w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=768,513 768w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2018/01/bcr-default-1200x800-bg.png?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/september-offers-something-for-everyone-at-boulder-city-library-131456/" rel="bookmark">September offers something for everyone at Boulder City Library</a></div>		<div class="field-info">
+										<div class="field-byline">More than Books By the Boulder City Library</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-08-28T08:31:41-07:00" style="display: none;">August 28, 2026 - 8:31 am</time><time class="entry-date updated" datetime="">August 28, 2026 - 8:31 am</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>As the heat finally comes down outside, inside the library we have cooked up some amazing events for this upcoming September that we&#8217;re excited to tell you all about. No matter what age our patrons are, we pride ourselves on having something for everyone, and our programming schedule for September is no exception.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131452" data-post-id="131452" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-image post-131452 post type-post status-publish format-standard has-post-thumbnail hentry category-news tag-mc-news rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/city-grants-cup-to-methodist-church-131452/" aria-label="City grants CUP to Methodist Church" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/08/22010028_web1_BCR-church-rendering1-AUG27-26.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="This rendering from GreeneTindall Design shows the proposed design of the new Boulder City Unit ..." decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/08/22010028_web1_BCR-church-rendering1-AUG27-26.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/08/22010028_web1_BCR-church-rendering1-AUG27-26.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/08/22010028_web1_BCR-church-rendering1-AUG27-26.jpg?resize=720,480 720w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/08/22010028_web1_BCR-church-rendering1-AUG27-26.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/city-grants-cup-to-methodist-church-131452/" rel="bookmark">City grants CUP to Methodist Church</a></div>		<div class="field-info">
+										<div class="field-byline">By Ron Eland Boulder City Review</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-08-28T08:31:21-07:00" style="display: none;">August 28, 2026 - 8:31 am</time><time class="entry-date updated" datetime="">August 28, 2026 - 8:31 am</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>The Boulder City United Methodist Church cleared a major hurdle last week in its desire to build a church of its own; something it&#8217;s wished to do for two decades.</p>
+		</div>
+	</div>
+</article>
+				</div>
+							<div class="rj-story-latest-news-wrap ">
+					<article id="post-131447" data-post-id="131447" data-field-geo="" class="rj-story rj-story-thumb-list rj-thumb-list has-video has-image post-131447 post type-post status-publish format-standard has-post-thumbnail hentry category-lake-mead-hoover-dam category-news tag-lake-mead tag-mc-news tag-rj-has-vdo rj-main-category--news rj-main-category-id--9">
+	<div class="field-col left">
+		<div class="field-image">
+			<a href="https://bouldercityreview.com/news/devastating-cuts-nevada-is-first-state-to-file-suit-over-colorado-river-plan-131447/" aria-label="‘Devastating’ cuts: Nevada is first state to file suit over Colorado River plan" rel="bookmark">
+									<img width="210" height="140" src="https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?w=210&amp;h=140&amp;crop=1" class="post-img field-img wp-post-image rj-lazy-load lazy-image" alt="" decoding="async" loading="lazy" data-lazy-srcset="https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg 1200w, https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?resize=600,400 600w, https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?resize=768,512 768w, https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?resize=360,240 360w, https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?resize=210,140 210w, https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?resize=720,480 720w, https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?resize=900,600 900w" data-lazy-sizes="auto, (max-width: 210px) 100vw, 210px" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2026/08/22005893_web1_COLORADO-RIVER-JUN19-26-013e.jpg?w=210&amp;h=140&amp;crop=1&amp;is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />							</a>
+							<div class="play-button pb-bot-left">&nbsp;</div>
+					</div>
+	</div>
+	<div class="field-col right">
+				<div class="entry-title field-title"><a href="https://bouldercityreview.com/news/devastating-cuts-nevada-is-first-state-to-file-suit-over-colorado-river-plan-131447/" rel="bookmark">‘Devastating’ cuts: Nevada is first state to file suit over Colorado River plan</a></div>		<div class="field-info">
+										<div class="field-byline">By Alan Halaly / RJ</div>
+					
+										<div class="field-update custom-field-update field-updated-time"><time class="entry-date published" datetime="2026-08-28T08:31:08-07:00" style="display: none;">August 28, 2026 - 8:31 am</time><time class="entry-date updated" datetime="">August 28, 2026 - 8:31 am</time></div>
+							</div>
+		<div class="field-excerpt">
+			<p>In a major escalation of tensions, Nevada&#8217;s water managers are bringing the fight over the Colorado River to the courtroom. Experts have warned against it for years.</p>
+		</div>
+	</div>
+</article>
+				</div>
+				</div><div id="rj_widget_text-62" class="rj-widget-num-3 rj-widget-odd  rj-widget rj_widget_text">		<div class="separator-horizontal"></div>		</div><div id="rj_widget_text-67" class="rj-widget-num-4 rj-widget-last rj-widget-even  rj-widget rj_widget_text">		<script type="text/javascript" src="https://s.ntv.io/serve/load.js" async></script>
+<style>.rj-story-full > .entry-content div.ntvMOAP{clear:both}</style>		</div>			</div>
+		</div>
+	</div><!-- #rjth-region-under-article-content -->
+
+	</div><!-- #content -->
+
+	
+</div><!-- #page -->
+
+<footer id="rj-footer" class="rj-container-fluid no-padding">
+	<div class="rj-footer">
+
+		
+		<div id="rjth-region-footer-row-1" class="widget-area rj-container">
+			<a href="https://bouldercityreview.com/" class="custom-logo-link" rel="home"><img width="400" height="40" src="https://bouldercityreview.com/wp-content/uploads/2019/06/bcr_logo_400_black-1.png" class="custom-logo rj-lazy-load lazy-image" alt="Boulder City Review" decoding="async" data-lazy-src="https://bouldercityreview.com/wp-content/uploads/2019/06/bcr_logo_400_black-1.png?is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></a>			<div class="social_icons"><a href="https://www.facebook.com/bouldercityreview" target="_blank" aria-label="rj_social_facebook"><i aria-hidden="true" class="fa fa-facebook"></i></a><a href="https://twitter.com/bcreview" target="_blank" aria-label="rj_social_twitter"><img width="50" height="47" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,c_scale,w_50/v1690838126/rj-project/social_x_icon.png" class="icon-x" alt="icon-x" /></a><a href="/rss" target="_blank" aria-label="rj_social_rss"><i aria-hidden="true" class="fa fa-rss"></i></a></div>			<div class="rj-line"></div>
+		</div>
+
+						<div id="rjth-region-footer-row-2" class="widget-area rj-container footer_menu">
+					<div id="nav_menu-7" class="rj-widget-num-1 rj-widget-first rj-widget-odd col-xs-6 col-sm-3 col-md-2 no-padding rj-widget widget_nav_menu"><div class="rj-widget-title">INFO &#038; EDITIONS</div><div class="menu-info-and-editions-container"><ul id="menu-info-and-editions" class="menu"><li id="menu-item-56508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56508"><a href="https://eedition.bouldercityreview.com/html5/reader/production/default.aspx?pubname=&amp;pubid=40de2c4b-7cc0-49af-aec9-2768d23e67dd">eEdition</a></li>
+</ul></div></div><div id="nav_menu-5" class="rj-widget-num-2 rj-widget-even col-xs-6 col-sm-3 col-md-2 no-padding rj-widget widget_nav_menu"><div class="rj-widget-title">SOLUTIONS</div><div class="menu-solutions-container"><ul id="menu-solutions" class="menu"><li id="menu-item-23645" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23645"><a href="https://bouldercityreview.com/contact-us/">Advertise with Us</a></li>
+<li id="menu-item-23671" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23671"><a href="https://bouldercityreview.com/contact-us/">Place a Classified ad</a></li>
+<li id="menu-item-71217" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71217"><a href="https://bouldercityreview.com/frequently-asked-questions/">FAQ</a></li>
+</ul></div></div><div id="nav_menu-6" class="rj-widget-num-3 rj-widget-odd col-xs-6 col-sm-3 col-md-2 no-padding rj-widget widget_nav_menu"><div class="rj-widget-title">SUBSCRIPTIONS</div><div class="menu-subscriptions-container"><ul id="menu-subscriptions" class="menu"><li id="menu-item-56510" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56510"><a href="https://checkout.reviewjournal.com/?sitecode=bcr">Subscribe</a></li>
+<li id="menu-item-56511" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56511"><a href="https://account.reviewjournal.com/Home?SiteCode=BCR">Put your paper on hold</a></li>
+<li id="menu-item-56512" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56512"><a href="https://account.reviewjournal.com/Home?SiteCode=BCR">Report a delivery issue</a></li>
+<li id="menu-item-56513" class="manage-newsletter menu-item menu-item-type-post_type menu-item-object-page menu-item-56513"><a href="https://bouldercityreview.com/email-alerts/">Newsletter sign up</a></li>
+</ul></div></div><div id="nav_menu-4" class="rj-widget-num-4 rj-widget-even col-xs-6 col-sm-3 col-md-2 no-padding rj-widget widget_nav_menu"><div class="rj-widget-title">CONNECTIONS</div><div class="menu-connections-container"><ul id="menu-connections" class="menu"><li id="menu-item-23632" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23632"><a href="https://bouldercityreview.com/about-us/">About Us</a></li>
+<li id="menu-item-23496" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23496"><a href="https://bouldercityreview.com/contact-us/">Contact Us</a></li>
+<li id="menu-item-23637" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23637"><a href="https://bouldercityreview.com/letter-to-editor/">Letter to Editor</a></li>
+<li id="menu-item-23642" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23642"><a href="https://bouldercityreview.com/submit-a-story/">Submit a story</a></li>
+<li id="menu-item-23629" class="hide menu-item menu-item-type-post_type menu-item-object-page menu-item-23629"><a href="https://bouldercityreview.com/feedback/">Feedback</a></li>
+</ul></div></div><div id="nav_menu-3" class="rj-widget-num-5 rj-widget-last rj-widget-odd double-size col-xs-12 col-sm-8 col-md-4 no-padding rj-widget widget_nav_menu"><div class="rj-widget-title">AFFILIATE PUBLICATIONS</div><div class="menu-affiliate-publications-container"><ul id="menu-affiliate-publications" class="menu"><li id="menu-item-23473" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23473"><a target="_blank" href="https://www.reviewjournal.com/">Las Vegas Review-Journal</a></li>
+<li id="menu-item-98712" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-98712"><a target="_blank" href="https://neon.reviewjournal.com/">neon</a></li>
+<li id="menu-item-23474" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23474"><a target="_blank" href="http://bestoflasvegas.com/">Best of Las Vegas</a></li>
+<li id="menu-item-23475" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23475"><a target="_blank" href="https://www.reviewjournal.com/business/vegas-business/">Vegas Business</a></li>
+<li id="menu-item-23476" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23476"><a target="_blank" href="https://pvtimes.com">Pahrump Valley Times</a></li>
+<li id="menu-item-71202" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-71202"><a target="_blank" href="https://www.reviewjournal.com/homes/new-homes/">LV New Homes Guide</a></li>
+<li id="menu-item-71203" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-71203"><a target="_blank" href="https://www.reviewjournal.com/raiders/">Vegas Nation</a></li>
+<li id="menu-item-71204" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-71204"><a target="_blank" href="https://www.reviewjournal.com/rj-magazine/">rj magazine</a></li>
+</ul></div></div>				</div>
+				
+					<div id="rjth-region-footer-row-3" class="widget-area rj-container footer_copyright">
+				<div id="rj_widget_text-12" class="rj-widget-num-1 rj-widget-first rj-widget-odd  rj-widget rj_widget_text">		<style>#rj-footer .footer_copyright .copyright-pipe {margin: 0 5px;}</style>
+<p>Copyright &copy; <span class="current-year">2019</span> <a href="https://www.reviewjournal.com/">Las Vegas Review-Journal, Inc.</a> <span class="copyright-pipe">|</span> <a href="https://www.reviewjournal.com/privacy/">Privacy policy</a> <span class="copyright-pipe">|</span> <a href="https://www.reviewjournal.com/terms-of-service/">Terms of Service</a> <span class="copyright-pipe">|</span> <a href="#cookie-preferences" onclick="event.preventDefault();window.Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Cookie Preferences</a> <span class="copyright-pipe">|</span> <a href="#do-not-sell" onclick="event.preventDefault();window.Osano.cm. showDoNotSell()">Your Privacy Choices</a></p>
+<p>Powered by <a href="https://vip.wordpress.com/?utm_source=vip_powered_wpcom&utm_medium=web&utm_campaign=VIP%20Footer%20Credit&utm_term=www.reviewjournal.com" rel="nofollow generator" target="_blank">WordPress.com VIP</a></p>
+<script>(function ($) {var now = new Date(); $('.current-year').text(now.getFullYear()); })(jQuery); </script>		</div><div id="rj_widget_text-53" class="rj-widget-num-2 rj-widget-even rj-container no-padding rj-widget rj_widget_text">		<div id="ad-sticky-banner" class="sticky-bottom" data-match-media="(max-width: 1099px)"></div>
+<style>
+.sticky-bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 1200px;
+    background: #fff;
+    z-index: 2;
+    display: none;
+}
+.sticky-bottom#ad-sticky-banner[data-google-query-id] {
+    display: block;
+}
+@media (max-width: 767px) {
+    #rj-footer {
+        padding-bottom: 50px;
+    }
+    .sticky-bottom {
+        height: 50px;
+    }
+    #rjth-region-topsponsor {
+        margin-bottom: 50px;
+    }
+    #rjth-region-topsponsor .topsponsor-container .topsponsor-close {
+        bottom: 65px;
+    }
+}
+@media (min-width: 768px) and (max-width: 1099px) {
+    #rj-footer {
+        padding-bottom: 90px;
+    }
+    .sticky-bottom {
+        height: 90px;
+    }
+    #rjth-region-topsponsor {
+        margin-bottom: 90px;
+    }
+    #rjth-region-topsponsor .topsponsor-container .topsponsor-close {
+        bottom: 140px;
+    }
+}
+@media (min-width: 1100px) {
+    .sticky-bottom#ad-sticky-banner[data-google-query-id] {
+        left: auto;
+        height: 90px;
+    }
+}
+</style>		</div><div id="rj_widget_text-70" class="rj-widget-num-3 rj-widget-odd  rj-widget rj_widget_text">		<script type="text/javascript">
+    (function(cid,mkt,config,domain) {
+        var ml = document.createElement('script');
+        var s = document.getElementsByTagName('script')[0] || document.head;
+        var cb;
+        try {
+            if (!(cb = localStorage._matherVer)) {
+                throw false;
+            }
+        } catch (e) {
+            cb = Math.round(new Date() / 1.0368e9);
+        }
+        ml.type = 'text/javascript'; ml.async = true; ml.defer = true; ml.id = '_mljs';
+        ml.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://' + (domain || 'js.matheranalytics.com/s') + '/' + cid + '/' + mkt + '/' + (config ? config + '/' : '') + 'ml.js?cb7=' + cb;
+        s.parentNode.insertBefore(ml, s);
+        })('ma54884','233443800','');
+</script>		</div><div id="rj_widget_text-76" class="rj-widget-num-4 rj-widget-last rj-widget-even  rj-widget rj_widget_text">		<div class="rj-subs-popup site-popup" style="display:none;">
+  <div class="f-cont">
+    <div class="f-close"><i class="fa fa-window-close" aria-hidden="true"></i></div>
+    <div class="f-title">Don't miss a thing!</div>
+    <div class="f-desc d1">Get the most comprehensive coverage of Boulder City</div>
+    <div class="f-img"><img width="400" height="296" alt="bcr subs" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,q_auto,c_scale,w_400/v1680912967/webdev/bcr_fingertips.jpg" data-lazy-src="https://res.cloudinary.com/review-journal/image/upload/f_auto,q_auto,c_scale,w_400/v1680912967/webdev/bcr_fingertips.jpg?is-pending-load=1" data-lazy-transform="1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class=" rj-lazy-load lazy-image"><noscript><img width="400" height="296" alt="bcr subs" src="https://res.cloudinary.com/review-journal/image/upload/f_auto,q_auto,c_scale,w_400/v1680912967/webdev/bcr_fingertips.jpg" /></noscript></div>
+    <div class="f-desc d2">Subscribe to home delivery for only 75¢ per week!</div>
+    <div class="f-subscribe"><a href="https://checkout.reviewjournal.com/basic1?sitecode=bcr&?g2i_source=referral&g2i_medium=internet&g2i_or_o=internet&g2i_or_p=modal" target="_blank">SUBSCRIBE</a></div>
+  </div>
+</div>
+<script>
+(function ($) {
+//$(document).ready(function (e) {
+    //https://bouldercityreview-develop.go-vip.co/
+    if (/bot|lighthouse/i.test(navigator.userAgent)) {
+        return;    
+    }
+    if (!window.localStorage) {
+      return;
+    }
+
+    var q_str = new URLSearchParams(window.location.search);
+    var dt = q_str.get('dt');
+    var cdate, cday;
+    var current_date;
+    
+    if (dt) {
+      cdate = new Date(dt);
+    } else {
+      cdate = new Date();
+    }
+    cday = cdate.getDay(); //0-6 | Sun-Sat
+    current_date = cdate.getTime();
+    current_date = current_date / (1000); //24*60*60*
+    current_date = parseInt(current_date);
+
+    var rj_subs_popup_date = window.localStorage.getItem('rj_subs_popup_date');
+    rj_subs_popup_date = parseInt(rj_subs_popup_date);
+    if (!Number.isInteger(rj_subs_popup_date)) {
+      rj_subs_popup_date = 0;
+    }
+
+    var rj_subs_popup_th = window.localStorage.getItem('rj_subs_popup_th');
+    rj_subs_popup_th = parseInt(rj_subs_popup_th);
+    if (!Number.isInteger(rj_subs_popup_th)) {
+      rj_subs_popup_th = 0;
+    }
+    rj_subs_popup_th++;
+
+    var date_diff = current_date - rj_subs_popup_date;
+   
+    //console.log('rj_current_date:'+current_date);
+    //console.log('rj_date:'+rj_subs_popup_date);
+    //console.log('rj_th:'+rj_subs_popup_th);
+    //console.log('rj_cday:'+cday);
+    //console.log('rj_date_diff:'+date_diff);
+
+    if ( ( cday == 1 || cday == 4 ) && date_diff > (1*24*60*60) && rj_subs_popup_th <= 8) {
+        window.localStorage.setItem('rj_subs_popup_th', rj_subs_popup_th);
+        window.localStorage.setItem('rj_subs_popup_date', current_date);
+        setTimeout(function() {
+          $('.rj-subs-popup').show();  
+        }, 2000);  
+    } 
+    function hide_subs_popup() {
+      $('.rj-subs-popup').hide();
+    }
+
+    $('.rj-subs-popup').click(function(e) {
+      if (e.target === this) {
+        hide_subs_popup();
+      }
+    });
+
+    $('.rj-subs-popup .f-close').click(function(e) {
+      hide_subs_popup();
+    });   
+//});
+})(jQuery);
+</script>
+<style>
+.rj-subs-popup {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-sizing: border-box;
+  font-family: 'Raleway',sans-serif;
+  font-size: 16px;
+}
+body.admin-bar .rj-subs-popup {
+  top: 46px;
+  height: calc(100% - 46px);
+}
+@media (min-width: 768px) {
+  body.admin-bar .rj-subs-popup {
+    top: 32px;
+    height: calc(100% - 32px);
+  }
+}
+.rj-subs-popup .f-cont {
+  width: 85%;
+  max-width: 600px;
+  max-height: 85%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #000;
+  padding: 20px;
+  overflow: auto;
+  text-align: center;
+}
+.rj-subs-popup .f-close {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #1e88e5;
+}
+.rj-subs-popup .f-title {
+  font-size: 25px;
+  font-weight: 900;
+}
+.rj-subs-popup .f-desc {
+  margin-bottom: 10px;
+}
+.rj-subs-popup .f-img {
+  width: 80%;
+  max-width: 300px;
+  margin: 10px auto;
+}
+.rj-subs-popup .f-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.rj-subs-popup  .f-subscribe a {
+    display: inline-block;
+    background-color: #1e88e5;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+</style>		</div>		    </div>
+			</div>
+</footer><!-- #rj-footer -->
+
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/rjth2019/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="jetpack-stats-js-before">
+_stq = window._stq || [];
+_stq.push([ "view", {"v":"ext","blog":"140802227","post":"131498","tz":"-7","srv":"bouldercityreview.com","hp":"vip","j":"1:16.1.3"} ]);
+_stq.push([ "clickTrackerInit", "140802227", "131498" ]);
+//# sourceURL=jetpack-stats-js-before
+</script>
+<script data-wp-strategy="defer" defer fetchpriority="low" id="jetpack-stats-js" src="https://stats.wp.com/e-202637.js"></script>
+</body>
+</html>
