@@ -461,6 +461,19 @@ const DISPOSITION_COLOR = {
 };
 const DISPOSITION_ORDER = ["Pending", "Authorized", "Interim", "Closed"];
 
+const STATE_NAMES = {
+  AL:"Alabama", AK:"Alaska", AZ:"Arizona", AR:"Arkansas", CA:"California",
+  CO:"Colorado", CT:"Connecticut", DE:"Delaware", FL:"Florida", GA:"Georgia",
+  HI:"Hawaii", ID:"Idaho", IL:"Illinois", IN:"Indiana", IA:"Iowa",
+  KS:"Kansas", KY:"Kentucky", LA:"Louisiana", ME:"Maine", MD:"Maryland",
+  MA:"Massachusetts", MI:"Michigan", MN:"Minnesota", MS:"Mississippi", MO:"Missouri",
+  MT:"Montana", NE:"Nebraska", NV:"Nevada", NH:"New Hampshire", NJ:"New Jersey",
+  NM:"New Mexico", NY:"New York", NC:"North Carolina", ND:"North Dakota", OH:"Ohio",
+  OK:"Oklahoma", OR:"Oregon", PA:"Pennsylvania", RI:"Rhode Island", SC:"South Carolina",
+  SD:"South Dakota", TN:"Tennessee", TX:"Texas", UT:"Utah", VT:"Vermont",
+  VA:"Virginia", WA:"Washington", WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming"
+};
+
 function fmtAcres(a) {
   const n = parseFloat(a);
   if (!n) return "0";
@@ -530,7 +543,8 @@ const allBounds = L.latLngBounds([]);
 DATA.features.forEach(f => {
   const p = f.properties;
   const color = DISPOSITION_COLOR[p.disposition] || "#9a9590";
-  const searchText = `${p.geographic_name} ${p.business_account_name} ${p.geo_state} ${p.case_number}`.toLowerCase();
+  const stateName = STATE_NAMES[p.geo_state] || "";
+  const searchText = `${p.geographic_name} ${p.business_account_name} ${p.geo_state} ${stateName} ${p.case_number}`.toLowerCase();
 
   const polyLayer = L.geoJSON(f, {
     style: { color: color, weight: 1.5, fillColor: color, fillOpacity: 0.35 }
