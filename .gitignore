@@ -9,3 +9,4 @@ __pycache__/
 # exceeds GitHub's 100MB hard file-size limit) - keep the synthesized
 # findings.md, just not the raw source PDFs
 external_research/local_records/documents/
+*.zip
