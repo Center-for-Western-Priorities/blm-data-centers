@@ -7,6 +7,22 @@ Source: BLM MLRS public ArcGIS REST service (`Land_Use_Authorizations/Rights_of_
 
 Combined: 137 raw hits, manually reviewed down to 36 confirmed + 3 flagged-ambiguous cases. Full raw list: `candidates_raw.csv`. Filtered list: `data_center_row_cases.csv`.
 
+## Refresh, 2026-09-23
+
+Re-ran both search passes (topic-keyword + developer-name, the latter expanded with the sector-scan watch list from §7 of `MLRS_API_HOWTO.md`: `TERRAPOWER`, `NATRIUM`, `SABEY`, `CRUSOE`, `KAIROS`, `DEEP ATOMIC`, `OLEARY`, `STRATOS`) and separately re-queried all 39 previously-tracked case numbers directly to catch drift. Net result: **2 new confirmed cases, 2 status/acreage updates, 0 renames, 0 removals.**
+
+**New cases:**
+- **Leo Energy Geotech** (AZAZ106849711, Kingman FO, 39.53 ac, Pending, filed 2026-09-17) — Leo Data LLC, a geotech sub-case for the existing Leo Data Center (AZAZ106782092), same pattern as the geotech sub-cases already tracked for Silver Springs West, Skylar, and On The Mark.
+- **Powerline to Prometheus facility** (WYWY105862062, Kemmerer FO, 13.23 ac, Pending, filed 2022-08-01) — applicant PacifiCorp (65% interest), explicitly named for Prometheus Hyperscale in BLM's own case name; a fourth Prometheus-linked supporting-infrastructure case (alongside the access road, water pipeline, and telecom line already tracked), and the oldest-filed case in this whole dataset by a wide margin — it predates every other Prometheus/Wyoming Hyperscale case here by over two years, suggesting this interconnection ROW has been in the pipeline since near the start of the Evanston build-out.
+
+**Status/acreage drift on existing cases:**
+- **NVNV106802346** (Silver Springs West Data Center Geotech) — Pending → **Authorized** (Land Use Authorization Issued, 2026-09-18).
+- **NVNV106802350** (On The Mark Data Center Geotech) — Pending → **Authorized** (Land Use Authorization Issued, 2026-09-18); recorded acreage also jumped **4.05 → 560.0** acres in the same update — the geotech case now carries the same acreage as its parent On The Mark main site (NVNV106778200, 560 ac), which reads as BLM consolidating the geotech authorization's recorded footprint onto the main site rather than a real change in the geotech work itself. Flagged as provisional, same caveat as prior acreage-drift findings (Charleston, Rhea Data) — not independently confirmed.
+
+**Broader keyword sweep, no other hits confirmed:** the wider raw pull (298 merged rows vs. 137 previously) was almost entirely noise from broadening `TRACT`/`FLEET`/`DIGITAL` further and adding the sector-scan names — same false-positive patterns already documented (DigitalPath Inc./California Broadband Coop, Arevia Power's renewable-only portfolio [Pink Sky Solar, Newark Valley, Silver Peak, Pony Express Wind, Libra Solar, San Emidio Solar I, Scorpio Energy Center — all already-known Arevia renewables, not data-center-linked], "Skylar Verano Solar" [Skylar Opportunities LLC's already-documented unrelated Riverside, CA solar lease], Norfleet/Northfleet Land Services, FirstDigital Telecom, and generic "CONTRACT/CONTRACTOR/TRACTOR" matches). No new developer names or sector players surfaced.
+
+Geometry was refreshed for all 41 rows via `add_geometry.py` + `add_legal_land_desc.py`; **33/41 now have geometry** (up from 31/39 — both new cases lack a digitized Shape and Leo Energy Geotech has no Case_Lands record either, consistent with being a brand-new Pending filing). The manually-recovered Jacqueline Data Center Project polygon (see the "Geometry / mapping" section below) isn't reproducible by either script, and both of them overwrite the full CSV/geojson on every run, so it was getting silently wiped on each refresh. **Fixed 2026-09-23** by adding `restore_manual_geometry.py`, a third pipeline step that re-applies a small hardcoded table of one-off manual recoveries (currently just Jacqueline) after the other two scripts run — see its docstring for the exact provenance. **Run order going forward: `add_geometry.py` → `add_legal_land_desc.py` → `restore_manual_geometry.py`.**
+
 **Excluded as false positives:** legacy telecom infrastructure using "SMR" (Specialized Mobile Radio, not Small Modular Reactor), company/place names containing "cloud" (St Cloud Mining, White Cloud Communications, McCloud, Cloud Peak Energy, etc.), cell-tower "co-location" cases (T-Mobile, BOR antenna sites), uranium/nuclear-fuel mining companies (Energy Fuels Nuclear, Western Nuclear, United Nuclear), federal facilities (NOAA data center, DOD comm sites, Nuclear Security Administration), generic "data collection" survey/monitoring permits, DigitalPath Inc./California Broadband Coop (rural broadband tower sites matched by "DIGITAL," unrelated), and Arevia Power's non-data-center wind/solar portfolio (Taurus Wind, Snake River Energy, Pink Sky Solar, Silver Peak, San Emidio Solar, Newark Valley, Scorpio Energy Center — all confirmed Arevia Power renewable-energy filings with no data-center connection).
 
 ## Methodology gap found 2026-09-18
@@ -72,13 +88,13 @@ This case could not have been found by the original method: it has no name to ma
 
 ## Status breakdown
 
-(39 rows: 36 confirmed + 3 flagged ambiguous cases)
+(41 rows: 38 confirmed + 3 flagged ambiguous cases — updated 2026-09-23, see "Refresh" section above)
 
 | Disposition | Count |
 |---|---|
 | Pending | 31 |
 | Closed | 5 |
-| Authorized | 1 |
+| Authorized | 3 |
 | Interim | 2 |
 
 ## Geometry / mapping (added 2026-09-18)
@@ -96,7 +112,7 @@ Of the original 9 geometry-less cases, this recovered one more (10 → 29 missin
 - **`WYWY106759247`** (Jacqueline Data Center Project, withdrawn) — has an MTRS legal description (5 segments, WY Meridian 06) but BLM's own `Case_Lands` join failed for it (`QLTY: "TOWNSHIP NOT FOUND"`). **Recovered anyway, manually (2026-09-18):** the townships/sections it cites (T20N/T21N R100-101W, 6th PM) turned out to exist and be fully surveyed in BLM's *separate*, canonical national PLSS reference service (`https://gis.blm.gov/arcgis/rest/services/Cadastral/BLM_Natl_PLSS_CadNSDI/MapServer`, layer 3 "PLSS Intersected") — so the `Case_Lands` failure was a gap in BLM's internal case-to-land join, not an actual absence of surveyed land. Queried each cited aliquot/lot directly (Sec 2: SW¼ + Lots 3-4; Sec 10: N½NE¼ + N½NW¼; Sec 32: entire section, since its N½ + N½SW¼ + N½SE¼ + Lots 1-4 exhaustively cover it) and unioned the parts into one polygon. Lands right next to the Jim Bridger power plant near Rock Springs, WY — consistent with the site-selection logic of other cases in this set (grid interconnection already in place). Same recovery approach (per-case PLSS query, not a scripted pass) should work for any future geometry-less case whose `Case_Lands` join fails but that has a legal description on file.
 - The remaining 7 (`NVNV106717443` Dayton North, `NVNV106774473` Horizon Project, `NVNV106758167` Monarch Data Center, `OROR106761793` Charleston Data Center and BESS, `UTUT106801248` Project Beehive, `UTUT106833224` and `IDID106725198`, both unnamed) have **no record at all** in `Case_Lands` either — BLM hasn't recorded a legal land description for these cases yet in any system checked so far, so there's nothing yet to query the national PLSS service with.
 
-Worth re-running both scripts periodically, same as the acreage/rename drift noted above.
+Worth re-running all three scripts periodically (`add_geometry.py`, `add_legal_land_desc.py`, `restore_manual_geometry.py` — see "Refresh, 2026-09-23" above), same as the acreage/rename drift noted above.
 
 ## Next step
 

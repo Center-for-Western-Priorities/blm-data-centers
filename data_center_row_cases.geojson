@@ -125,7 +125,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000EK2ooYAD",
         "centroid_lat": "32.874041",
-        "centroid_lon": "-112.104688"
+        "centroid_lon": "-112.104688",
+        "legal_land_description": "AZ 14 0060S 0020E 025 A S2NW,SW; AZ 14 0060S 0020E 025 L 7,8,17-24"
       }
     },
     {
@@ -220,7 +221,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000EJwbJYAT",
         "centroid_lat": "33.526904",
-        "centroid_lon": "-113.119387"
+        "centroid_lon": "-113.119387",
+        "legal_land_description": "AZ 14 0020N 0080W 007 A E2SW,SE; AZ 14 0020N 0080W 007 L 2-4"
       }
     },
     {
@@ -423,7 +425,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000GVKajYAH",
         "centroid_lat": "34.892528",
-        "centroid_lon": "-114.475322"
+        "centroid_lon": "-114.475322",
+        "legal_land_description": "AZ 14 0170N 0210W 001 A S2NE,S2NW,SW,NWSE; AZ 14 0170N 0210W 001 L 1-4; AZ 14 0170N 0210W 002 A S2NE,S2NW,SW,NWSE; AZ 14 0170N 0210W 002 L 1-4; AZ 14 0170N 0210W 003 A S2NE,SE; AZ 14 0170N 0210W 003 L 1-2; AZ 14 0180N 0200W 031 L 1,2; AZ 14 0180N 0210W 036 A NE,S2"
       }
     },
     {
@@ -600,7 +603,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000EJfNZYA1",
         "centroid_lat": "33.104299",
-        "centroid_lon": "-112.243906"
+        "centroid_lon": "-112.243906",
+        "legal_land_description": "AZ 14 0040S 0010E 003 A SWNE,SWSENE,S2NW,SW,SE; AZ 14 0040S 0010E 003 L 2-4; AZ 14 0040S 0010E 010 A NW; AZ 14 0040S 0010E 011 A SWNWNE,SWNE,NW"
       }
     },
     {
@@ -849,7 +853,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000AyFPpYAN",
         "centroid_lat": "43.435595",
-        "centroid_lon": "-116.140650"
+        "centroid_lon": "-116.140650",
+        "legal_land_description": "ID 08 0010N 0020E 001 9 ALL; ID 08 0010N 0030E 006 A W2; ID 08 0010N 0030E 007 A E2; ID 08 0010N 0030E 008 9 ALL; ID 08 0010N 0030E 017 9 ALL; ID 08 0010N 0030E 018 9 ALL"
       }
     },
     {
@@ -1306,7 +1311,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000GK5yPYAT",
         "centroid_lat": "42.866869",
-        "centroid_lon": "-114.380183"
+        "centroid_lon": "-114.380183",
+        "legal_land_description": "ID 08 0060S 0170E 015 A NWSE,SWSE; ID 08 0060S 0170E 022 A NENE,NESE,NWNE,SENE; ID 08 0060S 0170E 023 A NESW,NWSW,SESW,SWSE; ID 08 0060S 0170E 024 A SESE; ID 08 0060S 0170E 025 A NENE,NESW,NWSE,NWSW,SESW,SWNW,SWSE; ID 08 0060S 0170E 026 A NENE,NWNE,SENE; ID 08 0060S 0180E 019 A SESE,SESW,SWSE; ID 08 0060S 0180E 019 L 4; ID 08 0060S 0180E 029 A NWSW,SWSW; ID 08 0060S 0180E 030 9 ALL; ID 08 0060S 0180E 031 A NENE,NENW,NESW,NWNE,SENE,SENW,SESW,SWNE; ID 08 0060S 0180E 031 L 1-4; ID 08 0060S 0180E 032 A NWNW,SWNW; ID 08 0070S 0170E 001 A SESE; ID 08 0070S 0170E 012 A NENE,NWNE; ID 08 0070S 0180E 004 L 4; ID 08 0070S 0180E 005 A SENW,SWNW; ID 08 0070S 0180E 005 L 1-4; ID 08 0070S 0180E 006 A NESE,NESW,NWSE,SENE,SESW,SWNE; ID 08 0070S 0180E 006 L 6-7"
       }
     },
     {
@@ -1769,7 +1775,8 @@
         "length": "",
         "salesforce_id": "a02SJ000003uFHBYA2",
         "centroid_lat": "39.396940",
-        "centroid_lon": "-115.149302"
+        "centroid_lon": "-115.149302",
+        "legal_land_description": "NV 21 0170N 0600E 012 A S2NW; NV 21 0170N 0600E 012 A SENW; NV 21 0170N 0610E 006 A E2NE; NV 21 0170N 0610E 006 A E2NW; NV 21 0170N 0610E 007 A E2NE; NV 21 0170N 0610E 007 A S2NW; NV 21 0170N 0610E 007 A SWNE; NV 21 0180N 0600E 013 A E2SW; NV 21 0180N 0600E 013 A S2SE; NV 21 0180N 0600E 013 A W2SE; NV 21 0180N 0600E 024 A E2; NV 21 0180N 0600E 024 A E2NW; NV 21 0180N 0600E 025 A NE; NV 21 0180N 0610E 018 A S2SW; NV 21 0180N 0610E 018 A SWSW; NV 21 0180N 0610E 019 A N2SE; NV 21 0180N 0610E 019 A N2SW; NV 21 0180N 0610E 019 A NW; NV 21 0180N 0610E 019 A NWNW; NV 21 0180N 0610E 019 A S2NE; NV 21 0180N 0610E 019 A W2NE; NV 21 0180N 0610E 020 A SWNW; NV 21 0180N 0610E 020 A W2SW; NV 21 0180N 0610E 029 A E2NW; NV 21 0180N 0610E 029 A E2SW; NV 21 0180N 0610E 030 A NWSW; NV 21 0180N 0610E 030 A SWNW; NV 21 0180N 0610E 032 A E2NW; NV 21 0180N 0610E 032 A E2SW"
       }
     },
     {
@@ -2328,7 +2335,8 @@
         "length": "",
         "salesforce_id": "a02SJ000006t1o6YAA",
         "centroid_lat": "39.400949",
-        "centroid_lon": "-115.258337"
+        "centroid_lon": "-115.258337",
+        "legal_land_description": "NV 21 0170N 0600E 001 A W2SW; NV 21 0170N 0600E 002 A E2NE; NV 21 0170N 0600E 002 A NESE; NV 21 0170N 0600E 012 A NW; NV 21 0180N 0590E 022 A SESE; NV 21 0180N 0590E 023 A NESE; NV 21 0180N 0590E 023 A NESW; NV 21 0180N 0590E 023 A S2SW; NV 21 0180N 0590E 023 A SE; NV 21 0180N 0590E 023 A SENE; NV 21 0180N 0590E 024 A N2NW; NV 21 0180N 0590E 024 A NE; NV 21 0180N 0590E 024 A SWNW; NV 21 0180N 0590E 024 A W2SW; NV 21 0180N 0590E 026 A N2SW; NV 21 0180N 0590E 026 A NW; NV 21 0180N 0590E 026 A NWNE; NV 21 0180N 0590E 026 A SWSW; NV 21 0180N 0590E 027 A NE; NV 21 0180N 0590E 027 A S2; NV 21 0180N 0590E 027 A S2NW; NV 21 0180N 0590E 028 A SENE; NV 21 0180N 0590E 034 A NE; NV 21 0180N 0590E 034 A NENW; NV 21 0180N 0590E 034 A NESE; NV 21 0180N 0590E 035 A NWNW; NV 21 0180N 0600E 019 A N2NE; NV 21 0180N 0600E 019 A N2NW; NV 21 0180N 0600E 020 A N2; NV 21 0180N 0600E 021 A S2NE; NV 21 0180N 0600E 021 A S2NW; NV 21 0180N 0600E 022 A N2SE; NV 21 0180N 0600E 022 A N2SW; NV 21 0180N 0600E 022 A S2NW; NV 21 0180N 0600E 023 A N2SW; NV 21 0180N 0600E 023 A SESW; NV 21 0180N 0600E 026 A NENW; NV 21 0180N 0600E 026 A W2NE; NV 21 0180N 0600E 026 A W2SE; NV 21 0180N 0600E 035 A E2SE; NV 21 0180N 0600E 035 A NE"
       }
     },
     {
@@ -2437,7 +2445,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000G4UW9YAN",
         "centroid_lat": "39.403901",
-        "centroid_lon": "-119.289338"
+        "centroid_lon": "-119.289338",
+        "legal_land_description": "NV 21 0180N 0240E 022 A SW,W2SE; NV 21 0180N 0240E 028 A N2"
       }
     },
     {
@@ -2603,18 +2612,19 @@
         "pct_interest": "100.0",
         "geo_state": "NV",
         "admin_state": "NV",
-        "disposition": "Pending",
-        "disposition_date": "2026-05-06",
-        "disposition_action": "",
+        "disposition": "Authorized",
+        "disposition_date": "2026-09-18",
+        "disposition_action": "Land Use Authorization Issued",
         "commodity": "NON-ENERGY FACILITIES",
         "blm_product": "OTHER FEDERAL LAND POLICY AND MANAGEMENT ACT",
         "jurisdiction": "Sierra Front Field Office",
-        "acres": "4.05",
+        "acres": "560.0",
         "width": "",
         "length": "",
         "salesforce_id": "a02SJ00000JhduPYAR",
         "centroid_lat": "39.404081",
-        "centroid_lon": "-119.289400"
+        "centroid_lon": "-119.289400",
+        "legal_land_description": "NV 21 0180N 0240E 022 A NESW,NWSW,SWSW,SESW,NWSE,SWSE; NV 21 0180N 0240E 028 A NENE,NWNE,SWNE,W2SENE,NENW,NWNW,SWNW,SENW"
       }
     },
     {
@@ -2757,7 +2767,8 @@
         "length": "",
         "salesforce_id": "a02SJ0000067t5xYAA",
         "centroid_lat": "39.413566",
-        "centroid_lon": "-119.290993"
+        "centroid_lon": "-119.290993",
+        "legal_land_description": "NV 21 0180N 0240E 020 A NE; NV 21 0180N 0240E 020 A NESE; NV 21 0180N 0240E 021 A N2; NV 21 0180N 0240E 021 A N2SE; NV 21 0180N 0240E 021 A N2SW; NV 21 0180N 0240E 022 A N2; NV 21 0180N 0240E 022 A N2SE; NV 21 0180N 0240E 022 A N2SW"
       }
     },
     {
@@ -2934,7 +2945,8 @@
         "length": "",
         "salesforce_id": "a02SJ0000067YpVYAU",
         "centroid_lat": "39.367556",
-        "centroid_lon": "-119.310794"
+        "centroid_lon": "-119.310794",
+        "legal_land_description": "NV 21 0170N 0240E 004 A N2SW; NV 21 0170N 0240E 004 A NW; NV 21 0170N 0240E 004 A NWNE; NV 21 0170N 0240E 004 A SWSW; NV 21 0170N 0240E 005 9 ALL; NV 21 0170N 0240E 008 A N2NENWNE; NV 21 0170N 0240E 008 A N2NW; NV 21 0170N 0240E 009 A NWNW"
       }
     },
     {
@@ -3065,7 +3077,8 @@
         "length": "",
         "salesforce_id": "a02SJ0000067mPRYAY",
         "centroid_lat": "39.409670",
-        "centroid_lon": "-119.311583"
+        "centroid_lon": "-119.311583",
+        "legal_land_description": "NV 21 0180N 0240E 020 A SE; NV 21 0180N 0240E 020 A SWNE; NV 21 0180N 0240E 020 A W2; NV 21 0180N 0240E 021 A S2SE; NV 21 0180N 0240E 021 A S2SW"
       }
     },
     {
@@ -3177,9 +3190,9 @@
         "pct_interest": "100.0",
         "geo_state": "NV",
         "admin_state": "NV",
-        "disposition": "Pending",
-        "disposition_date": "2026-05-06",
-        "disposition_action": "",
+        "disposition": "Authorized",
+        "disposition_date": "2026-09-18",
+        "disposition_action": "Land Use Authorization Issued",
         "commodity": "NON-ENERGY FACILITIES",
         "blm_product": "OTHER FEDERAL LAND POLICY AND MANAGEMENT ACT",
         "jurisdiction": "Sierra Front Field Office",
@@ -3188,7 +3201,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000JhbNxYAJ",
         "centroid_lat": "39.409863",
-        "centroid_lon": "-119.305684"
+        "centroid_lon": "-119.305684",
+        "legal_land_description": "NV 21 0180N 0240E 020 A S2NE,S2NW,SW,SE; NV 21 0180N 0240E 021 A S2NE,S2NW,SW,SE"
       }
     },
     {
@@ -3317,7 +3331,8 @@
         "length": "",
         "salesforce_id": "a023d00000I7g6JAAR",
         "centroid_lat": "35.947622",
-        "centroid_lon": "-114.919046"
+        "centroid_lon": "-114.919046",
+        "legal_land_description": "NV 21 0230S 0630E 014 A NWNW,SWNW,N2NENWSW,S2SESW; NV 21 0230S 0630E 014 L 7"
       }
     },
     {
@@ -3446,7 +3461,8 @@
         "length": "",
         "salesforce_id": "a02SJ000005fc6TYAQ",
         "centroid_lat": "35.947622",
-        "centroid_lon": "-114.919046"
+        "centroid_lon": "-114.919046",
+        "legal_land_description": "NV 21 0230S 0630E 014 A NWNW,SWNW,N2NENWSW,S2SESW; NV 21 0230S 0630E 014 L 7"
       }
     },
     {
@@ -3581,7 +3597,8 @@
         "length": "",
         "salesforce_id": "a023d00000GZwjdAAD",
         "centroid_lat": "35.942627",
-        "centroid_lon": "-114.918988"
+        "centroid_lon": "-114.918988",
+        "legal_land_description": "NV 21 0230S 0630E 014 A SWSW,S2NWSW,NWNWSW,S2NENWSW,S2SESW; NV 21 0230S 0630E 014 L 7"
       }
     },
     {
@@ -4386,7 +4403,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000GtiwrYAB",
         "centroid_lat": "39.040296",
-        "centroid_lon": "-110.243831"
+        "centroid_lon": "-110.243831",
+        "legal_land_description": "UT 26 0200S 0140E 024 A S2SW,S2SE; UT 26 0200S 0140E 025 9 ALL; UT 26 0200S 0150E 019 A SESW,S2SE; UT 26 0200S 0150E 019 L 4; UT 26 0200S 0150E 020 A S2SW; UT 26 0200S 0150E 020 Z S2SE; UT 26 0200S 0150E 021 Z S2SW; UT 26 0200S 0150E 025 9 ALL; UT 26 0200S 0150E 026 9 ALL; UT 26 0200S 0150E 027 9 ALL; UT 26 0200S 0150E 028 9 ALL; UT 26 0200S 0150E 029 9 ALL; UT 26 0200S 0150E 030 9 ALL; UT 26 0200S 0150E 031 9 ALL; UT 26 0200S 0150E 033 9 ALL; UT 26 0200S 0150E 034 9 ALL; UT 26 0200S 0150E 035 9 ALL; UT 26 0210S 0150E 001 9 ALL; UT 26 0210S 0150E 003 9 ALL; UT 26 0210S 0150E 004 9 ALL; UT 26 0210S 0150E 005 A NESE; UT 26 0210S 0150E 005 L 1-10,14-16; UT 26 0210S 0150E 012 A W2NE,N2NW,NWSE; UT 26 0210S 0150E 012 L 1-4; UT 26 0210S 0160E 005 L 2-6,11-12; UT 26 0210S 0160E 006 A NESW,S2SE; UT 26 0210S 0160E 006 L 5-6,11-13,19-22"
       }
     },
     {
@@ -4467,7 +4485,8 @@
         "length": "",
         "salesforce_id": "a023d00000Ga4MiAAJ",
         "centroid_lat": "41.237073",
-        "centroid_lon": "-110.750762"
+        "centroid_lon": "-110.750762",
+        "legal_land_description": ""
       }
     },
     {
@@ -4564,7 +4583,8 @@
         "length": "",
         "salesforce_id": "a023d00000Ga4MgAAJ",
         "centroid_lat": "41.240724",
-        "centroid_lon": "-110.748219"
+        "centroid_lon": "-110.748219",
+        "legal_land_description": ""
       }
     },
     {
@@ -4767,7 +4787,8 @@
         "length": "17332.71",
         "salesforce_id": "a02SJ000006l7XFYAY",
         "centroid_lat": "41.227383",
-        "centroid_lon": "-110.759763"
+        "centroid_lon": "-110.759763",
+        "legal_land_description": "WY 06 0140N 1180W 006 L 001; WY 06 0150N 1180W 028 A W2NW; WY 06 0150N 1180W 032 A NWNE,NENW,S2NW,W2SW"
       }
     },
     {
@@ -4888,7 +4909,8 @@
         "length": "6864",
         "salesforce_id": "a02SJ000006l5ooYAA",
         "centroid_lat": "41.240738",
-        "centroid_lon": "-110.746774"
+        "centroid_lon": "-110.746774",
+        "legal_land_description": "WY 06 0150N 1180W 028 A W2NW; WY 06 0150N 1180W 032 A NWNE,NENW,S2NW,W2SW"
       }
     },
     {
@@ -4979,7 +5001,8 @@
         "length": "",
         "salesforce_id": "a02SJ000006lAOfYAM",
         "centroid_lat": "41.236470",
-        "centroid_lon": "-110.750761"
+        "centroid_lon": "-110.750761",
+        "legal_land_description": "WY 06 0150N 1180W 032 A NWNE,NENW,S2NW,W2SW"
       }
     },
     {
@@ -5176,7 +5199,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000MU97dYAD",
         "centroid_lat": "35.848004",
-        "centroid_lon": "-115.540333"
+        "centroid_lon": "-115.540333",
+        "legal_land_description": "NV 21 0240S 0570E 023 L 1,2,8; NV 21 0240S 0570E 024 L 5,6,7,10,16"
       }
     },
     {
@@ -5235,7 +5259,8 @@
         "length": "",
         "salesforce_id": "a02SJ000002dVNlYAM",
         "centroid_lat": "45.844512",
-        "centroid_lon": "-119.586438"
+        "centroid_lon": "-119.586438",
+        "legal_land_description": "OR 33 0040N 0260E 008 A S2NE"
       }
     },
     {
@@ -5584,7 +5609,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000EIBGIYA5",
         "centroid_lat": "36.450167",
-        "centroid_lon": "-114.880018"
+        "centroid_lon": "-114.880018",
+        "legal_land_description": "NV 21 0170S 0630E 024 A NENE,SENE,NESE,NWSE,SESE,SWSE; NV 21 0170S 0630E 025 A NWNE,NENW,SENW,SESE,NENE,SENE,SWNE,NESW,NWSE,NESE,SESW,SWSW; NV 21 0170S 0630E 026 A SESE; NV 21 0170S 0630E 035 A NENE,NWNE,SWNE,SENE; NV 21 0170S 0630E 036 A NWNW; NV 21 0170S 0640E 017 A SWSW; NV 21 0170S 0640E 018 A SWNE,NESW,NWSE,NESE,SWSE,SESE,SESW; NV 21 0170S 0640E 019 A NWNE,NENE,NENW,SENW,SWNE,SENE,NESW,SESW; NV 21 0170S 0640E 019 L 5,6,7,8; NV 21 0170S 0640E 020 A NWSE,NESW,NWSW,SWSW,SESW,SWSE; NV 21 0170S 0640E 020 L 2; NV 21 0170S 0640E 029 A NESW,NWSW; NV 21 0170S 0640E 030 A SESW,NESW,SENW,NWSE,SWSE,NENW,SESE,NESE; NV 21 0170S 0640E 030 L 5,6,7"
       }
     },
     {
@@ -5695,7 +5721,8 @@
         "length": "",
         "salesforce_id": "a02SJ00000224SzYAI",
         "centroid_lat": "36.437229",
-        "centroid_lon": "-114.945045"
+        "centroid_lon": "-114.945045",
+        "legal_land_description": "NV 21 0170S 0630E 025 A SWSE; NV 21 0170S 0630E 026 A SESE; NV 21 0170S 0630E 030 A SESW,SWSE; NV 21 0170S 0630E 030 L 8"
       }
     },
     {
@@ -5794,7 +5821,8 @@
         "length": "",
         "salesforce_id": "a02SJ0000022NiXYAU",
         "centroid_lat": "36.487444",
-        "centroid_lon": "-114.819116"
+        "centroid_lon": "-114.819116",
+        "legal_land_description": "NV 21 0170S 0640E 010 A SENE,SWNE,SENW,NWSE; NV 21 0170S 0640E 010 L 5; NV 21 0170S 0640E 010 L 6; NV 21 0170S 0640E 010 L 7"
       }
     },
     {
@@ -6063,7 +6091,8 @@
         "length": "",
         "salesforce_id": "a023d00000Ga1aQAAR",
         "centroid_lat": "35.808434",
-        "centroid_lon": "-114.992315"
+        "centroid_lon": "-114.992315",
+        "legal_land_description": "NV 21 0240S 0620E 036 A SWSESE; NV 21 0240S 0630E 031 A NWSW,SWSW,SESW,NESW,NWSE,SWNE,SENE; NV 21 0240S 0630E 032 A NWSW,SWSW; NV 21 0250S 0620E 001 A SWNW,SENW; NV 21 0250S 0620E 001 L 5-8; NV 21 0250S 0620E 002 A SENE,NESE; NV 21 0250S 0620E 002 L 5"
       }
     },
     {
@@ -6254,7 +6283,180 @@
         "length": "",
         "salesforce_id": "a02SJ00000JCjCvYAL",
         "centroid_lat": "33.589419",
-        "centroid_lon": "-113.467968"
+        "centroid_lon": "-113.467968",
+        "legal_land_description": "AZ 14 0030N 0120W 013 A SE; AZ 14 0030N 0120W 014 A S2; AZ 14 0030N 0120W 023 A N2; AZ 14 0030N 0120W 027 A W2"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.75156790238508,
+              41.23525798615612
+            ],
+            [
+              -110.75156566588514,
+              41.23887260256712
+            ],
+            [
+              -110.7515634313853,
+              41.24248710597808
+            ],
+            [
+              -110.74673495538401,
+              41.242527491363695
+            ],
+            [
+              -110.74674213688536,
+              41.23891651395271
+            ],
+            [
+              -110.74674931838689,
+              41.235305537541656
+            ],
+            [
+              -110.75156790238508,
+              41.23525798615612
+            ]
+          ],
+          [
+            [
+              -110.73745464654112,
+              41.308017719533495
+            ],
+            [
+              -110.73745935879376,
+              41.309825539738206
+            ],
+            [
+              -110.73504848829211,
+              41.30983612193021
+            ],
+            [
+              -110.73263761779042,
+              41.30984670412214
+            ],
+            [
+              -110.73263114253743,
+              41.30803857791756
+            ],
+            [
+              -110.73259785702804,
+              41.30442757551043
+            ],
+            [
+              -110.73740619402875,
+              41.30440813312784
+            ],
+            [
+              -110.73745464654112,
+              41.308017719533495
+            ]
+          ],
+          [
+            [
+              -110.75638647938311,
+              41.235210231770466
+            ],
+            [
+              -110.75156790238508,
+              41.23525798615612
+            ],
+            [
+              -110.75157013788511,
+              41.23164320474502
+            ],
+            [
+              -110.75638374288162,
+              41.23159200735946
+            ],
+            [
+              -110.75638647938311,
+              41.235210231770466
+            ]
+          ],
+          [
+            [
+              -110.718218137041,
+              41.311717908475444
+            ],
+            [
+              -110.72302158404088,
+              41.311697076093026
+            ],
+            [
+              -110.72302881050962,
+              41.31505368947333
+            ],
+            [
+              -110.72062201700986,
+              41.31507288366598
+            ],
+            [
+              -110.71821522251005,
+              41.31509207785862
+            ],
+            [
+              -110.718218137041,
+              41.311717908475444
+            ]
+          ],
+          [
+            [
+              -110.73719792317081,
+              41.25534273157296
+            ],
+            [
+              -110.73721505142657,
+              41.25716194077836
+            ],
+            [
+              -110.73482023193225,
+              41.257199452971655
+            ],
+            [
+              -110.73480494267707,
+              41.25538224376638
+            ],
+            [
+              -110.734789654422,
+              41.25356503356105
+            ],
+            [
+              -110.73718079391502,
+              41.25352352236756
+            ],
+            [
+              -110.73719792317081,
+              41.25534273157296
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_number": "WYWY105862062",
+        "legacy_case_number": "WYW    191997",
+        "geographic_name": "Powerline to Prometheus facility",
+        "business_account_name": "PACIFICORP",
+        "pct_interest": "65.0",
+        "geo_state": "WY",
+        "admin_state": "WY",
+        "disposition": "Pending",
+        "disposition_date": "2022-08-01",
+        "disposition_action": "",
+        "commodity": "OTHER ENERGY FACILITIES",
+        "blm_product": "POWER TRANSMISSION FEDERAL LAND POLICY AND MANAGEMENT ACT",
+        "jurisdiction": "KEMMERER FIELD OFFICE",
+        "acres": "13.23",
+        "width": "",
+        "length": "",
+        "salesforce_id": "a023d00000GZwrEAAT",
+        "centroid_lat": "41.268286",
+        "centroid_lon": "-110.740817",
+        "legal_land_description": ""
       }
     },
     {

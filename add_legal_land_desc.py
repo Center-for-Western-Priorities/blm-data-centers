@@ -22,7 +22,10 @@ For every row in data_center_row_cases.csv:
     add_geometry.py, tries to recover geometry by unioning all of that
     case's Case_Lands parcel-part rings and recomputing the centroid.
 
-Run add_geometry.py first.
+Run add_geometry.py first, and run restore_manual_geometry.py after this
+script - it reapplies any one-off manual geometry recoveries that neither
+this script nor add_geometry.py can reproduce, since both overwrite the
+CSV/geojson wholesale on every run.
 """
 import csv
 import json
