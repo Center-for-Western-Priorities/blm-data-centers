@@ -9,7 +9,9 @@ restore_manual_geometry.py -> build_map_data.py
 import csv
 import json
 import re
+import os
 import shutil
+import subprocess
 
 G = json.load(open("data_center_row_cases.geojson"))
 mapped = {f["properties"]["case_number"] for f in G["features"]}
@@ -27,4 +29,6 @@ html, n = re.subn(r"^const DATA = .*;$", lambda m: line, html, flags=re.M)
 assert n == 1
 open("map.html", "w").write(html)
 shutil.copyfile("map.html", "site/index.html")
+os.remove("blm-data-center-tracker.zip") if os.path.exists("blm-data-center-tracker.zip") else None
+subprocess.run(["zip", "-rq", "blm-data-center-tracker.zip", "site", "-x", "*.DS_Store"], check=True)
 print(f"map.html + site/index.html: {len(G['features'])} mapped, {len(unmapped)} unmapped")
