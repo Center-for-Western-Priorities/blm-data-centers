@@ -7,6 +7,17 @@ Source: BLM MLRS public ArcGIS REST service (`Land_Use_Authorizations/Rights_of_
 
 Combined: 137 raw hits, manually reviewed down to 36 confirmed + 3 flagged-ambiguous cases. Full raw list: `candidates_raw.csv`. Filtered list: `data_center_row_cases.csv`.
 
+## Refresh, 2026-10-01
+
+Re-ran both search passes (topic-keyword + developer-name, same lists as 2026-09-23; 296 raw hits) and re-queried all 41 tracked cases. Net result: **0 new cases, 0 status changes, 0 renames, 0 removals** — the dataset is stable since 2026-09-23.
+
+- **Charleston Data Center and BESS** (OROR106761793, Copia, OR, Baker FO) is now **mapped**. BLM has added a legal land description (Case_Lands, T5N R28E Sec 22) that the ROW layer still lacks a Shape for, so geometry was recovered via `add_legal_land_desc.py`. Mapped cases: 33 → **34 of 41**.
+- **Rhea Data LLC** (IDID106743948, ID, Arevia-linked) — recorded filing date changed **2026-02-02 → 2025-08-26** in BLM's system. Still Pending, 1 ac. Cause unknown; treat as provisional.
+- All other noise hits match the false-positive patterns already documented (Arevia renewables incl. Scorpio Energy Center and its geotech case, Skylar solar in CA, Campbell Tract in AK, etc.).
+- Added `build_map_data.py` as the final pipeline step (embeds the geojson into `map.html` and copies to `site/index.html`). **Run order: `add_geometry.py` → `add_legal_land_desc.py` → `restore_manual_geometry.py` → `build_map_data.py`.**
+
+Status breakdown is unchanged: 31 Pending, 5 Closed, 3 Authorized, 2 Interim.
+
 ## Refresh, 2026-09-23
 
 Re-ran both search passes (topic-keyword + developer-name, the latter expanded with the sector-scan watch list from §7 of `MLRS_API_HOWTO.md`: `TERRAPOWER`, `NATRIUM`, `SABEY`, `CRUSOE`, `KAIROS`, `DEEP ATOMIC`, `OLEARY`, `STRATOS`) and separately re-queried all 39 previously-tracked case numbers directly to catch drift. Net result: **2 new confirmed cases, 2 status/acreage updates, 0 renames, 0 removals.**
