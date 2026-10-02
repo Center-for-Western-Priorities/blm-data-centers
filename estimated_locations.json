@@ -1,0 +1,11 @@
+{
+  "UTUT106801248": {
+    "centroid_lat": 39.600,
+    "centroid_lon": -110.695,
+    "uncertainty": "about 1 mile",
+    "method": "Hand-estimated from the locator map in NPR's 2026-09-30 story. Anchored on the Carbon County-Price Regional Airport marker (39.6139, -110.7514) and the map's 3-mile scale bar; the hatched site's visual center falls about 3.0 mi east and 0.95 mi south of the airport. Not BLM geometry; the BLM case has no shape or legal land description yet.",
+    "description": "Valar Atomics proposes a nuclear-powered data center campus on more than 9,000 acres of BLM land east of Price, Utah: roughly 456 small reactors producing about 9.6 GW, plus data centers, fuel production and waste storage. Non-nuclear construction could begin by the end of 2026, with the first reactors in 2028.",
+    "source_name": "NPR",
+    "source_url": "https://www.npr.org/2026/09/30/nx-s1-5983482/valar-atomic-nuclear-data-center-project-beehive-utah"
+  }
+}

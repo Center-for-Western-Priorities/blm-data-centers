@@ -30,6 +30,7 @@ CSV/geojson wholesale on every run.
 import csv
 import json
 import shutil
+import time
 
 import requests
 
@@ -49,9 +50,17 @@ def fetch_case_lands(case_number):
         "outSR": "4326",
         "f": "json",
     }
-    resp = requests.post(CL_URL, data=params, timeout=30)
-    resp.raise_for_status()
-    return (resp.json().get("features") or [])
+    # Case_Lands is sometimes very slow (30s+ per query), so use a long
+    # timeout and retry rather than dying mid-run.
+    for attempt in range(4):
+        try:
+            resp = requests.post(CL_URL, data=params, timeout=120)
+            resp.raise_for_status()
+            return (resp.json().get("features") or [])
+        except requests.exceptions.RequestException:
+            if attempt == 3:
+                raise
+            time.sleep(5)
 
 
 def main():
