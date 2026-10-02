@@ -10,3 +10,6 @@ __pycache__/
 # findings.md, just not the raw source PDFs
 external_research/local_records/documents/
 *.zip
+
+# Local Netlify folder
+.netlify

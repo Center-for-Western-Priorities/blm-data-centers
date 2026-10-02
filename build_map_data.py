@@ -5,6 +5,9 @@ the result to site/index.html.
 
 Run order: add_geometry.py -> add_legal_land_desc.py ->
 restore_manual_geometry.py -> build_map_data.py
+
+Then deploys site/ to the linked Netlify site (production). Pass --no-deploy
+to skip that and only rebuild locally.
 """
 import csv
 import json
@@ -12,6 +15,7 @@ import re
 import os
 import shutil
 import subprocess
+import sys
 
 G = json.load(open("data_center_row_cases.geojson"))
 mapped = {f["properties"]["case_number"] for f in G["features"]}
@@ -41,3 +45,8 @@ shutil.copyfile("map.html", "site/index.html")
 os.remove("blm-data-center-tracker.zip") if os.path.exists("blm-data-center-tracker.zip") else None
 subprocess.run(["zip", "-rq", "blm-data-center-tracker.zip", "site", "-x", "*.DS_Store"], check=True)
 print(f"map.html + site/index.html: {len(G['features'])} mapped, {len(unmapped)} unmapped ({len(estimated)} with estimated location)")
+
+if "--no-deploy" in sys.argv:
+    print("Skipping Netlify deploy (--no-deploy).")
+else:
+    subprocess.run(["netlify", "deploy", "--prod", "--dir=site"], check=True)
