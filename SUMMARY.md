@@ -7,6 +7,31 @@ Source: BLM MLRS public ArcGIS REST service (`Land_Use_Authorizations/Rights_of_
 
 Combined: 137 raw hits, manually reviewed down to 36 confirmed + 3 flagged-ambiguous cases. Full raw list: `candidates_raw.csv`. Filtered list: `data_center_row_cases.csv`.
 
+## Refresh, 2026-10-15
+
+Re-ran both search passes (topic-keyword + developer-name, same lists as 2026-10-08, including the full sector-scan watch list from `MLRS_API_HOWTO.md` §7) and re-queried all 41 tracked case numbers directly. Net result: **0 new confirmed cases, 0 status changes, 0 acreage changes, 0 renames, 0 removals.** The dataset is unchanged since 2026-10-08 (which itself had not yet been committed to git — this refresh builds on that uncommitted working state, not on the last commit).
+
+**Mapped count:** 34/41 (unchanged). Same 7 cases remain without BLM geometry: Dayton North, Horizon Project, Monarch Data Center, Project Beehive, Leo Energy Geotech, and two unnamed NV/ID parcels.
+
+**Noise reviewed, nothing new confirmed:** 296 merged raw hits (same scale as the 2026-10-01 pull using the documented 15-term topic list; higher than 2026-10-08's 244 because this run, like 2026-10-01's, surfaced the full `TRACT`/`FLEET` noise set). The 52 raw hits not already logged in `candidates_raw.csv` were all reviewed: 51 are new instances of already-documented false-positive families (BLM's own "Campbell Tract" administrative/communication facility complex in Anchorage, AK — over 20 unrelated case records all matching the literal place name; scattered generic land-survey "TRACT" parcels in AL/AZ/CO/MT/NM/OR/SD/WY; "Van Fleet Road" and "Red Fleet" — place names matching `FLEET`; and **Orocopia** [CA, a desert place name containing the substring "copia," unrelated to Copia Power, 0.016 ac, long-closed]) and 1 (`WYWY105862062`, Powerline to Prometheus facility) is an already-tracked, already-confirmed case that had simply never been backfilled into `candidates_raw.csv` — added now, no change to `data_center_row_cases.csv`. No new developer names surfaced.
+
+Status breakdown: unchanged, 29 Pending, 6 Closed, 3 Authorized, 3 Interim.
+
+## Refresh, 2026-10-08
+
+Re-ran both search passes (topic-keyword + developer-name, same lists as 2026-10-01, now including the full sector-scan watch list from `MLRS_API_HOWTO.md` §7: `TERRAPOWER`, `NATRIUM`, `SABEY`, `CRUSOE`, `KAIROS`, `DEEP ATOMIC`, `OLEARY`, `STRATOS`; 244 merged raw hits) and re-queried all 41 tracked case numbers directly. Net result: **0 new confirmed cases, 2 status changes, 1 acreage change, 0 renames, 0 removals.** All 41 tracked cases still exist and were re-found by direct lookup. (Also backfilled `candidates_raw.csv`, which hadn't actually been updated since the original 2026-09-18 pull despite the refresh instructions saying to — it now includes the ~107 additional raw rows surfaced by this and recent passes, all reviewed and still matching already-documented false-positive patterns; see below.)
+
+**Status/acreage drift on existing cases:**
+- **UTUT106784007** (Green River Gigasite Small Modular Reactor/Data Center, Valar Atomics, Price FO, 10,270.61 ac) — Pending → **Closed, "Case Closed without Action"** (disposition date now 2026-10-06). This is Valar's larger of its two Utah Gigasite campuses (the other, Project Beehive, is still Pending) — worth flagging prominently since it's a full case closure, not a drift artifact like the earlier acreage-consolidation cases.
+- **NVNV106774473** (Horizon Project (Data Center), Skylar Opportunities LLC, Las Vegas FO) — Pending → **Interim** (disposition date also 2026-10-06; recorded acreage still 0.0). Note both this and the Green River closure carry the identical 2026-10-06 disposition-date timestamp, suggesting BLM ran a batch status update that day touching both records.
+- **NVNV106392400** (unnamed Copia GDC, LLC parcel, Las Vegas FO, still Pending) — recorded acreage dropped **179.33 → 40.0** acres. Treat as provisional, same caveat as prior acreage-drift findings (Charleston, Rhea Data, On The Mark Geotech).
+
+**Mapped count:** 34/41 (unchanged from 2026-10-01) — Horizon Project's move to Interim didn't gain it a digitized shape; it's still one of the 7 cases with no BLM geometry on file (Dayton North, Horizon Project, Monarch Data Center, Project Beehive, Leo Energy Geotech, and two unnamed NV/ID parcels).
+
+**Noise reviewed, nothing new confirmed:** the broader merged pull (244 rows vs. 296 on 2026-10-01 — lower because this run's topic-keyword pass used the documented 15-term list rather than an ad hoc broader one) was almost entirely the same already-documented false-positive families (DigitalPath Inc. telecom tower sites, the "Digital 395" broadband fiber project [including two newly-seen segments, Barstow and Ridgecrest, filed by the CA Department of Technology], Arevia Power's non-data-center renewable portfolio [Pink Sky Solar, Newark Valley, Silver Peak, Pony Express Wind, Libra Solar I/II, San Emidio Solar I, Scorpio Energy Center plus a newly-seen small unnamed Scorpio-cluster sub-case, Taurus Wind, Snake River Energy], Fleet Call of UT/West Inc. [legacy radio, not Fleet Data Centers], Norfleet/Northfleet Land Services, FirstDigital Telecom, Prometheus Gold [an unrelated Montana mining company], and a large number of generic "CONTRACTING/CONTRACTOR/TRACTOR" matches from the `TRACT` keyword). Two borderline items got a closer look and were still rejected: **Whiting-Turner Contracting Company** (a single small, already-Closed 2024 ROW case in Las Vegas FO — Whiting-Turner is a known national data-center general contractor, but nothing ties this specific case to a tracked campus) and **Skylar Energy Resources LLC** (a large but unrelated, already-Closed-2020 Palm Springs solar lease — predates Skylar Opportunities' 2024-2025 Las Vegas data-center pivot and reads as a distinct corporate entity). No new developer names surfaced.
+
+Status breakdown: 29 Pending, 6 Closed, 3 Authorized, 3 Interim (was 31/5/3/2 on 2026-10-01).
+
 ## Refresh, 2026-10-01
 
 Re-ran both search passes (topic-keyword + developer-name, same lists as 2026-09-23; 296 raw hits) and re-queried all 41 tracked cases. Net result: **0 new cases, 0 status changes, 0 renames, 0 removals** — the dataset is stable since 2026-09-23.

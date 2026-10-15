@@ -34,7 +34,11 @@ CSV_PATH = "data_center_row_cases.csv"
 GEOJSON_PATH = "data_center_row_cases.geojson"
 
 
-def fetch_geometry(case_number, layer_id):
+def fetch_geometry(case_number, layer_id, retries=5):
+    """BLM's ArcGIS server intermittently returns a spurious
+    {"error": {"code": 404, "message": "Layer not found"}} for a valid,
+    existing layer (observed repeatedly, same layer/query succeeds on
+    retry) -- retry before concluding geometry is genuinely absent."""
     url = f"{BASE}/{layer_id}/query"
     params = {
         "where": f"CSE_NR='{case_number}'",
@@ -43,16 +47,21 @@ def fetch_geometry(case_number, layer_id):
         "outSR": "4326",
         "f": "json",
     }
-    resp = requests.post(url, data=params, timeout=30)
-    resp.raise_for_status()
-    body = resp.json()
-    features = body.get("features") or []
-    if not features:
-        return None
-    geom = features[0].get("geometry")
-    if not geom or not geom.get("rings"):
-        return None
-    return geom["rings"]
+    for attempt in range(retries):
+        resp = requests.post(url, data=params, timeout=30)
+        resp.raise_for_status()
+        body = resp.json()
+        if "error" in body:
+            time.sleep(min(2 * (attempt + 1), 6))
+            continue
+        features = body.get("features") or []
+        if not features:
+            return None
+        geom = features[0].get("geometry")
+        if not geom or not geom.get("rings"):
+            return None
+        return geom["rings"]
+    return None
 
 
 def ring_signed_area_and_centroid(ring):

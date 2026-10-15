@@ -4186,14 +4186,6 @@
           ],
           [
             [
-              -110.2693615249127,
-              39.03880563404632
-            ],
-            [
-              -110.26935125648636,
-              39.03518067759997
-            ],
-            [
               -110.26934153307253,
               39.03166101916645
             ],
@@ -4276,6 +4268,14 @@
             [
               -110.2693615249127,
               39.03880563404632
+            ],
+            [
+              -110.26935125648636,
+              39.03518067759997
+            ],
+            [
+              -110.26934153307253,
+              39.03166101916645
             ]
           ],
           [
@@ -4392,9 +4392,9 @@
         "pct_interest": "0.0",
         "geo_state": "UT",
         "admin_state": "UT",
-        "disposition": "Pending",
-        "disposition_date": "2026-02-13",
-        "disposition_action": "",
+        "disposition": "Closed",
+        "disposition_date": "2026-10-06",
+        "disposition_action": "Case Closed without Action",
         "commodity": "NON-ENERGY FACILITIES",
         "blm_product": "OTHER FEDERAL LAND POLICY AND MANAGEMENT ACT",
         "jurisdiction": "Price Field Office",
@@ -5716,7 +5716,7 @@
         "commodity": "OTHER ENERGY FACILITIES",
         "blm_product": "Power Facility & Transmission",
         "jurisdiction": "LAS VEGAS FIELD OFFICE",
-        "acres": "179.33",
+        "acres": "40.0",
         "width": "",
         "length": "",
         "salesforce_id": "a02SJ00000224SzYAI",
