@@ -2,7 +2,7 @@
 
 This documents the exact method used in this project to search BLM's Mineral & Land Records System (MLRS) land-use-authorization / rights-of-way (ROW) data — without clicking through the map UI's attribute table. It's written so a human or another agent can reproduce every step.
 
-**Scope note:** this covers the MLRS/GIS ROW database only. It does *not* cover BLM's separate NEPA project register (eplanning.blm.gov), which has no comparable open REST API and had to be driven through its web UI instead (see the "Key corporate findings" research in `PROJECT_SUMMARIES.md` for that side of the project).
+**Scope note:** this covers the MLRS/GIS ROW database only. It does *not* cover BLM's separate NEPA project register (eplanning.blm.gov), which has no comparable open REST API and had to be driven through its web UI instead.
 
 ## 1. Background: what you're actually talking to
 
@@ -182,7 +182,7 @@ curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_
   --data-urlencode "f=json"
 ```
 
-Run once per known developer name/fragment, across all four layers, and merge into the existing candidate set by `CSE_NR`. The developer list should be **seeded from corporate research, not guessed** — every name below came from work already documented in `PROJECT_SUMMARIES.md`:
+Run once per known developer name/fragment, across all four layers, and merge into the existing candidate set by `CSE_NR`. The developer list should be **seeded from corporate research, not guessed** — every name below came from separate corporate and press research (see `external_research/`):
 
 `COPIA` (Copia Digital / Copia GDC / Copia Power [DevCo variants]) · `VALAR` (Valar Atomics) · `PROMETHEUS` (Prometheus Hyperscale) · `SKYLAR` (Skylar Opportunities / Skylar Capital) · `MEADOWLARK` (Meadowlark Renewables Center) · `AREVIA` (Arevia Power — parent of Idaho's Rhea Data LLC per the Sun's reporting) · `TRACT` / `FLEET` (Tract Capital Management / Fleet Data Centers — unconfirmed Nevada lead)
 

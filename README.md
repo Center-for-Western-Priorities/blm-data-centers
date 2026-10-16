@@ -12,7 +12,6 @@ A Center for Western Priorities project that tracks right-of-way (ROW) cases on 
 | `candidates_raw.csv` | Every raw search hit reviewed, including the false positives that were rejected |
 | `map.html` → `site/index.html` | The interactive Leaflet map (`map.html` is the source; `site/` is what gets deployed) |
 | `SUMMARY.md` | Running dataset summary and a dated log of every refresh |
-| `PROJECT_SUMMARIES.md` | Per-project/developer write-ups with corporate and press research |
 | `MLRS_API_HOWTO.md` | Step-by-step guide to querying BLM's MLRS ArcGIS REST service, so the search can be reproduced |
 | `estimated_locations.json` | Hand-estimated locations for cases BLM has no geometry for (currently Project Beehive) |
 | `external_research/` | Supporting research by source type (corporate filings, SEC EDGAR, news, local records, utility interconnection), each with a `findings.md` and archived source documents |
@@ -82,4 +81,4 @@ Pass `--no-deploy` to `build_map_data.py` to rebuild without deploying. Python d
 
 ## Credits and license
 
-A project of the [Center for Western Priorities](https://westernpriorities.org). Land-records data is from the Bureau of Land Management; corporate and press sources are cited in `PROJECT_SUMMARIES.md` and under `external_research/`. Released under the MIT License (see `LICENSE`).
+A project of the [Center for Western Priorities](https://westernpriorities.org). Land-records data is from the Bureau of Land Management; corporate and press sources are cited in `SUMMARY.md` and under `external_research/`. Released under the MIT License (see `LICENSE`).

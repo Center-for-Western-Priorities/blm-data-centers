@@ -43,7 +43,7 @@ Re-ran both search passes (topic-keyword + developer-name, same lists as 2026-09
 
 Status breakdown is unchanged: 31 Pending, 5 Closed, 3 Authorized, 2 Interim.
 
-**Project Beehive location research (2026-10-01):** NPR's 2026-09-30 story puts it east/southeast of Price, Carbon County (9,000-9,500+ ac BLM, ~456 reactors, ~9.6 GW), and a Utah Trust Lands (SITLA) board packet (2026-09-17) shows a companion 640-acre state lease at T14S R11E Sec 16, ~5 mi north of Wellington (vote outcome not in packet). No coordinates or geometry published; the case stays in the "not yet mappable" count, but the map now shows a one-off **approximate centroid** (hand-estimated from NPR's map, ±~1 mi; `estimated_locations.json`) with an NPR-credited description. Details in `PROJECT_SUMMARIES.md`.
+**Project Beehive location research (2026-10-01):** NPR's 2026-09-30 story puts it east/southeast of Price, Carbon County (9,000-9,500+ ac BLM, ~456 reactors, ~9.6 GW), and a Utah Trust Lands (SITLA) board packet (2026-09-17) shows a companion 640-acre state lease at T14S R11E Sec 16, ~5 mi north of Wellington (vote outcome not in packet). No coordinates or geometry published; the case stays in the "not yet mappable" count, but the map now shows a one-off **approximate centroid** (hand-estimated from NPR's map, ±~1 mi; `estimated_locations.json`) with an NPR-credited description.
 
 ## Refresh, 2026-09-23
 
