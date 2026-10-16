@@ -10,6 +10,7 @@ Then deploys site/ to the linked Netlify site (production). Pass --no-deploy
 to skip that and only rebuild locally.
 """
 import csv
+import datetime
 import json
 import re
 import os
@@ -39,6 +40,9 @@ line = "const DATA = " + json.dumps(data, separators=(",", ":")) + ";"
 
 html = open("map.html").read()
 html, n = re.subn(r"^const DATA = .*;$", lambda m: line, html, flags=re.M)
+assert n == 1
+today = datetime.date.today()
+html, n = re.subn(r'(<span id="lastUpdated">)[^<]*(</span>)', lambda m: f"{m[1]}{today:%B} {today.day}, {today.year}{m[2]}", html)
 assert n == 1
 open("map.html", "w").write(html)
 shutil.copyfile("map.html", "site/index.html")
