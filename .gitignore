@@ -13,3 +13,6 @@ external_research/local_records/documents/
 
 # Local Netlify folder
 .netlify
+
+# Downloaded source PDFs (SITLA board packets, etc.) - kept locally, not in repo
+source_materials/
