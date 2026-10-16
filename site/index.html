@@ -167,7 +167,7 @@
   /* stat cards */
   .stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
   }
   .stat-card {
@@ -183,6 +183,13 @@
     color: var(--cwp-blue-3);
     font-variant-numeric: tabular-nums;
     line-height: 1.1;
+  }
+  .stat-card .atleast {
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--text-muted);
   }
   .stat-card .label {
     font-size: 11px;
@@ -426,9 +433,8 @@
         <p class="panel-title">Overview</p>
         <div class="stats">
           <div class="stat-card"><div class="num" id="statCases">–</div><div class="label">Cases tracked</div></div>
-          <div class="stat-card"><div class="num" id="statAcres">–</div><div class="label">Acres (mapped)</div></div>
+          <div class="stat-card"><div class="num"><span class="atleast">At least</span> <span id="statAcres">–</span></div><div class="label">Acres</div></div>
           <div class="stat-card"><div class="num" id="statStates">–</div><div class="label">States</div></div>
-          <div class="stat-card"><div class="num" id="statMapped">–</div><div class="label">On the map</div></div>
         </div>
       </div>
 
@@ -645,14 +651,26 @@ function updateZoomMode() {
 map.on('zoomend', updateZoomMode);
 updateZoomMode();
 
-// ---- stats ----
-const totalAcres = DATA.features.reduce((s, f) => s + (parseFloat(f.properties.acres) || 0), 0);
-const states = new Set(DATA.features.map(f => f.properties.geo_state));
-DATA.unmapped.forEach(u => states.add(u.geo_state));
-document.getElementById('statCases').textContent = DATA.features.length + DATA.unmapped.length;
-document.getElementById('statAcres').textContent = totalAcres.toLocaleString(undefined, {maximumFractionDigits: 0});
-document.getElementById('statStates').textContent = states.size;
-document.getElementById('statMapped').textContent = DATA.features.length;
+// ---- stats (reflect the checked dispositions) ----
+const DEFAULT_OFF = new Set(["Closed"]);
+// Acreage reported by press for cases BLM has no geometry for
+// (Project Beehive: "more than 9,000 acres", NPR 2026-09-30).
+const REPORTED_ACRES = {"UTUT106801248": 9000};
+function updateStats() {
+  const on = d => {
+    const cb = document.querySelector(`input[data-disp="${d}"]`);
+    return cb ? cb.checked : true;
+  };
+  const feats = DATA.features.filter(f => on(f.properties.disposition));
+  const unmapped = DATA.unmapped.filter(u => on(u.disposition));
+  const acres = feats.reduce((s, f) => s + (parseFloat(f.properties.acres) || 0), 0)
+    + unmapped.reduce((s, u) => s + (REPORTED_ACRES[u.case_number] || 0), 0);
+  const states = new Set(feats.map(f => f.properties.geo_state));
+  unmapped.forEach(u => states.add(u.geo_state));
+  document.getElementById('statCases').textContent = feats.length + unmapped.length;
+  document.getElementById('statAcres').textContent = (Math.floor(acres / 500) * 500).toLocaleString();
+  document.getElementById('statStates').textContent = states.size;
+}
 
 // ---- legend / filters ----
 const counts = {};
@@ -664,13 +682,15 @@ DISPOSITION_ORDER.forEach(d => {
   const row = document.createElement('label');
   row.className = 'legend-row';
   row.innerHTML = `
-    <input type="checkbox" checked data-disp="${d}">
+    <input type="checkbox" ${DEFAULT_OFF.has(d) ? '' : 'checked'} data-disp="${d}">
     <span class="swatch" style="background:${DISPOSITION_COLOR[d]}"></span>
     <span class="name">${d}</span>
     <span class="count">${counts[d] || 0}</span>`;
   legendEl.appendChild(row);
 });
-legendEl.addEventListener('change', applyFilters);
+legendEl.addEventListener('change', () => { applyFilters(); updateStats(); });
+applyFilters();
+updateStats();
 
 // ---- search ----
 document.getElementById('searchBox').addEventListener('input', () => {
