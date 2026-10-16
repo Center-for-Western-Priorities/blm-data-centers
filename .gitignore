@@ -16,3 +16,6 @@ external_research/local_records/documents/
 
 # Downloaded source PDFs (SITLA board packets, etc.) - kept locally, not in repo
 source_materials/
+
+# Internal research notes - kept locally, not in repo
+PROJECT_SUMMARIES.md
