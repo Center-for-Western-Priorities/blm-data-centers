@@ -35,7 +35,12 @@ estimated = []
 for case, e in est_src.items():
     assert case in by_case and case not in mapped, case
     estimated.append({**{c: by_case[case][c] for c in cols}, **e})
-data = dict(G, unmapped=unmapped, estimated=estimated)
+# Per-case notes drawn from outside reporting (see case_notes.json). They are
+# shown in the case's popup alongside, never in place of, BLM's recorded data.
+notes = json.load(open("case_notes.json"))
+for case in notes:
+    assert case in by_case, case
+data = dict(G, unmapped=unmapped, estimated=estimated, notes=notes)
 line = "const DATA = " + json.dumps(data, separators=(",", ":")) + ";"
 
 html = open("map.html").read()

@@ -14,6 +14,7 @@ A Center for Western Priorities project that tracks right-of-way (ROW) cases on 
 | `SUMMARY.md` | Running dataset summary and a dated log of every refresh |
 | `MLRS_API_HOWTO.md` | Step-by-step guide to querying BLM's MLRS ArcGIS REST service, so the search can be reproduced |
 | `estimated_locations.json` | Hand-estimated locations for cases BLM has no geometry for (currently Project Beehive) |
+| `case_notes.json` | One-sentence notes from outside reporting, shown in a case's popup without changing BLM's recorded data (currently Townsite Data Center's revoked approval). To add one, add an entry keyed by case number with `note`, `source_name`, `source_url` and `source_date`, then rebuild |
 | `external_research/` | Supporting research by source type (corporate filings, SEC EDGAR, news, local records, utility interconnection), each with a `findings.md` and archived source documents |
 | `add_geometry.py`, `add_legal_land_desc.py`, `restore_manual_geometry.py`, `build_map_data.py` | The geometry and map-build pipeline (see below) |
 
