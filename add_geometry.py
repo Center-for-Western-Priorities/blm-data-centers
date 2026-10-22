@@ -23,7 +23,7 @@ import time
 
 import requests
 
-BASE = "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer"
+BASE = "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer"
 LAYER_BY_DISPOSITION = {
     "Authorized": 0,
     "Pending": 1,

@@ -5,7 +5,7 @@ Queries BLM's sibling `Case_Lands` ArcGIS REST service (derived from the
 LR2000 Case Recordation Database's Legal Land Descriptions, geocoded via
 PLSS - i.e. Meridian/Township/Range/Section "MTRS"), keyed by CSE_NR:
 
-  https://gis.blm.gov/nlsdb/rest/services/Case_Lands/MapServer/0
+  https://nlsdbpubgis.blm.gov/arcgis/rest/services/Case_Lands/MapServer/0
 
 This is a different dataset than Rights_of_Way_Case_Disp (the one
 add_geometry.py uses) and sometimes has records - including mapped
@@ -34,7 +34,7 @@ import time
 
 import requests
 
-CL_URL = "https://gis.blm.gov/nlsdb/rest/services/Case_Lands/MapServer/0/query"
+CL_URL = "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Case_Lands/MapServer/0/query"
 CSV_PATH = "data_center_row_cases.csv"
 GEOJSON_PATH = "data_center_row_cases.geojson"
 

@@ -4,6 +4,8 @@ This documents the exact method used in this project to search BLM's Mineral & L
 
 **Scope note:** this covers the MLRS/GIS ROW database only. It does *not* cover BLM's separate NEPA project register (eplanning.blm.gov), which has no comparable open REST API and had to be driven through its web UI instead.
 
+**Host change (2026-10-21):** BLM moved the service from `gis.blm.gov/nlsdb/rest/services/...` to `nlsdbpubgis.blm.gov/arcgis/rest/services/...` after the October 2026 outage. Everything else (service names, layer IDs, fields) is unchanged, and the old host 301-redirects to the new root only. All URLs below use the new host.
+
 ## 1. Background: what you're actually talking to
 
 The map layer the public-facing MLRS "Land Map" shows (Land Use Authorizations → Rights-of-Way, with sub-categories for Pending/Authorized/Interim/Closed) is backed by a standard **Esri ArcGIS Server REST service**. It's public and requires no login, API key, or authentication — the same data the web map renders is available as JSON over plain HTTPS.
@@ -11,17 +13,17 @@ The map layer the public-facing MLRS "Land Map" shows (Land Use Authorizations �
 Base service URL for the national ROW case dataset:
 
 ```
-https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer
+https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer
 ```
 
-Anything under `gis.blm.gov/nlsdb/rest/services/` is this same kind of ArcGIS REST endpoint — other BLM datasets (e.g. mining claims, grazing allotments) live at sibling paths under the same host, following the same conventions described below.
+Anything under `nlsdbpubgis.blm.gov/arcgis/rest/services/` is this same kind of ArcGIS REST endpoint — other BLM datasets (e.g. mining claims, grazing allotments) live at sibling paths under the same host, following the same conventions described below.
 
 ## 2. Step 1 — Discover the service structure
 
 Append `?f=json` to any ArcGIS REST endpoint to get its metadata as JSON instead of an HTML preview page.
 
 ```bash
-curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer?f=json" | python3 -m json.tool | less
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer?f=json" | python3 -m json.tool | less
 ```
 
 The response includes a `layers` array — this is how we learned the four ROW case-disposition types are exposed as separate **sub-layers**, each with its own numeric ID:
@@ -40,7 +42,7 @@ Every query below targets one specific layer ID via its own sub-URL: `.../MapSer
 Query a specific layer (not the MapServer root) with `?f=json` to get its field list, including each field's internal name, human-readable alias, and type:
 
 ```bash
-curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1?f=json"
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1?f=json"
 ```
 
 This is the step that told us, for example, that "Geographic Name" (what you'd type into the map UI's attribute-table filter) is actually the field `CSE_NAME`, and "Business Account Name" is `CUST_NM_SEC` — the exact field names you need for the `where` clause in step 4. Full field reference:
@@ -76,7 +78,7 @@ This is the step that told us, for example, that "Geographic Name" (what you'd t
 The actual data lives at a `query` sub-endpoint of each layer:
 
 ```
-https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/<layer_id>/query
+https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/<layer_id>/query
 ```
 
 It's a standard Esri REST query endpoint (GET or POST) accepting these key parameters:
@@ -95,7 +97,7 @@ It's a standard Esri REST query endpoint (GET or POST) accepting these key param
 Before pulling any records, check how many would come back — this is a single lightweight request:
 
 ```bash
-curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1/query" \
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1/query" \
   --data-urlencode "where=UPPER(CSE_NAME) LIKE '%DATA%' OR UPPER(CUST_NM_SEC) LIKE '%DATA%'" \
   --data-urlencode "returnCountOnly=true" \
   --data-urlencode "f=json"
@@ -106,7 +108,7 @@ We used this to check all four dispositions before deciding it was safe to pull 
 ### 4b. Pulling actual records
 
 ```bash
-curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1/query" \
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1/query" \
   --data-urlencode "where=UPPER(CSE_NAME) LIKE '%DATA%' OR UPPER(CUST_NM_SEC) LIKE '%DATA%'" \
   --data-urlencode "outFields=CSE_NR,CSE_NAME,CUST_NM_SEC,GEO_STATE,CSE_DISP,CSE_DISP_DT,RCRD_ACRS,CMMDTY,BLM_PROD,SF_ID" \
   --data-urlencode "returnGeometry=false" \
@@ -118,7 +120,7 @@ Response shape is standard Esri JSON: a `features` array, each element with an `
 ### 4c. Getting distinct values of a field (useful for scoping a search before committing to it)
 
 ```bash
-curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1/query" \
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/1/query" \
   --data-urlencode "where=1=1" \
   --data-urlencode "outFields=CMMDTY" \
   --data-urlencode "returnDistinctValues=true" \
@@ -175,7 +177,7 @@ Combine both (a null-named case filed by a shell LLC) and a real, currently-acti
 **The fix — run a second pass keyed on known developers, independent of topic keywords:**
 
 ```bash
-curl -s "https://gis.blm.gov/nlsdb/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/<layer_id>/query" \
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Land_Use_Authorizations/Rights_of_Way_Case_Disp/MapServer/<layer_id>/query" \
   --data-urlencode "where=UPPER(CUST_NM_SEC) LIKE '%COPIA%'" \
   --data-urlencode "outFields=CSE_NR,CSE_NAME,CUST_NM_SEC,GEO_STATE,CSE_DISP,CSE_DISP_DT,RCRD_ACRS,CMMDTY,BLM_PROD,CSE_JURIS_DESC" \
   --data-urlencode "returnGeometry=false" \

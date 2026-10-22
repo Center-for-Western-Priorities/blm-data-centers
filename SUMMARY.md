@@ -7,6 +7,14 @@ Source: BLM MLRS public ArcGIS REST service (`Land_Use_Authorizations/Rights_of_
 
 Combined: 137 raw hits, manually reviewed down to 36 confirmed + 3 flagged-ambiguous cases. Full raw list: `candidates_raw.csv`. Filtered list: `data_center_row_cases.csv`.
 
+## Refresh, 2026-10-21
+
+**Host move.** After the ~2026-10-19 outage (see `external_research/mlrs_outage_log.md`), BLM's ArcGIS REST services came back on a new host and path: `https://nlsdbpubgis.blm.gov/arcgis/rest/services/...` (was `https://gis.blm.gov/nlsdb/rest/services/...`; the old host now 301-redirects to the new root). Service names, layer IDs (Authorized 0 / Pending 1 / Interim 2 / Closed 3) and field names are unchanged. `add_geometry.py`, `add_legal_land_desc.py` and the docs were updated to the new base URL.
+
+Re-ran both search passes (same lists as 2026-10-15; 244 merged raw hits, all already in `candidates_raw.csv`) and re-queried all 41 tracked case numbers directly. Net result: **0 new confirmed cases, 0 status changes, 0 acreage changes, 0 renames, 0 removals**; all 41 cases still exist. Geometry pipeline re-run end to end: **34/41 mapped (unchanged)**, same 7 unmapped. The regenerated CSV/GeoJSON differ from the prior versions only in the ordering of polygon parts within three MULTIPOLYGONs (same coordinates).
+
+Status breakdown: unchanged, 29 Pending, 6 Closed, 3 Authorized, 3 Interim.
+
 ## Refresh, 2026-10-15
 
 Re-ran both search passes (topic-keyword + developer-name, same lists as 2026-10-08, including the full sector-scan watch list from `MLRS_API_HOWTO.md` §7) and re-queried all 41 tracked case numbers directly. Net result: **0 new confirmed cases, 0 status changes, 0 acreage changes, 0 renames, 0 removals.** The dataset is unchanged since 2026-10-08 (which itself had not yet been committed to git — this refresh builds on that uncommitted working state, not on the last commit).
@@ -143,7 +151,7 @@ A standalone `data_center_row_cases.geojson` (FeatureCollection, full polygons +
 
 **30 of 39 cases got geometry from the ROW case-disposition layer; 9 did not** — BLM's system has no digitized Shape recorded for these yet in that layer (confirmed by checking all four dispositions directly, not a query bug). Most also have `0.0` recorded acreage — consistent with being early-stage filings BLM hasn't surveyed/digitized yet.
 
-**Legal land descriptions / MTRS (added 2026-09-18, `add_legal_land_desc.py`):** a sibling ArcGIS service, `Case_Lands` (`https://gis.blm.gov/nlsdb/rest/services/Case_Lands/MapServer/0`), carries each case's Legal Land Description from BLM's LR2000 Case Recordation Database — Meridian/Township/Range/Section ("MTRS") strings, e.g. `AZ 14 0020S 0100W 032 Z W2NW,W2SW` (AZ, Meridian 14, T20S R100W, Sec 32, aliquot W½NW¼+W½SW¼) — independent of whether the ROW layer has a mapped Shape. Queried by `CSE_NR` and added as a new `legal_land_description` column (semicolon-joined per case, empty when BLM has no LLD on file yet). Where this service also had its own PLSS-derived geometry, it was unioned in to fill gaps in `polygon_wkt`/`centroid_lat`/`centroid_lon`.
+**Legal land descriptions / MTRS (added 2026-09-18, `add_legal_land_desc.py`):** a sibling ArcGIS service, `Case_Lands` (`https://nlsdbpubgis.blm.gov/arcgis/rest/services/Case_Lands/MapServer/0`), carries each case's Legal Land Description from BLM's LR2000 Case Recordation Database — Meridian/Township/Range/Section ("MTRS") strings, e.g. `AZ 14 0020S 0100W 032 Z W2NW,W2SW` (AZ, Meridian 14, T20S R100W, Sec 32, aliquot W½NW¼+W½SW¼) — independent of whether the ROW layer has a mapped Shape. Queried by `CSE_NR` and added as a new `legal_land_description` column (semicolon-joined per case, empty when BLM has no LLD on file yet). Where this service also had its own PLSS-derived geometry, it was unioned in to fill gaps in `polygon_wkt`/`centroid_lat`/`centroid_lon`.
 
 Of the original 9 geometry-less cases, this recovered one more (10 → 29 missing... i.e. **31/39 now have geometry**):
 - **`AZAZ106766456`** (Harquahala to Hyder Transmission Line) — full polygon + centroid recovered from `Case_Lands` (6 legal-description parcel segments).
