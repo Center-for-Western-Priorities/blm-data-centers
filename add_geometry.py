@@ -109,6 +109,53 @@ def polygon_centroid(rings):
     return lat, lon
 
 
+def _ring_signed_area(ring):
+    return sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(ring, ring[1:])) / 2.0
+
+
+def _point_in_ring(pt, ring):
+    """Ray-casting point-in-polygon test for one closed ring."""
+    x, y = pt
+    inside = False
+    for (x0, y0), (x1, y1) in zip(ring, ring[1:]):
+        if (y0 > y) != (y1 > y) and x < (x1 - x0) * (y - y0) / (y1 - y0) + x0:
+            inside = not inside
+    return inside
+
+
+def rings_to_geojson_geometry(rings):
+    """ArcGIS ring list -> GeoJSON Polygon or MultiPolygon.
+
+    ArcGIS returns one flat list per case: clockwise rings are outer
+    boundaries (separate parts), counter-clockwise rings are holes. GeoJSON
+    nests each hole under its shell, so a bare `Polygon` holding several
+    outer rings turns the extra parts into holes outside their shell. Rings
+    are written with RFC 7946 winding (exterior counter-clockwise, holes
+    clockwise).
+    """
+    shells = []  # [ring, [holes]]
+    holes = []
+    for ring in rings:
+        if ring[0] != ring[-1]:
+            ring = ring + [ring[0]]
+        if _ring_signed_area(ring) < 0:
+            shells.append([ring[::-1], []])
+        else:
+            holes.append(ring[::-1])
+    for hole in holes:
+        containing = [
+            s for s in shells
+            if sum(_point_in_ring(p, s[0]) for p in hole) > len(hole) / 2
+        ]
+        if not containing:
+            raise ValueError("hole ring is not inside any outer ring")
+        min(containing, key=lambda s: _ring_signed_area(s[0]))[1].append(hole)
+    polygons = [[shell] + hs for shell, hs in shells]
+    if len(polygons) == 1:
+        return {"type": "Polygon", "coordinates": polygons[0]}
+    return {"type": "MultiPolygon", "coordinates": polygons}
+
+
 def rings_to_wkt(rings):
     parts = []
     for ring in rings:
@@ -162,7 +209,7 @@ def main():
 
         geojson_features.append({
             "type": "Feature",
-            "geometry": {"type": "Polygon", "coordinates": rings},
+            "geometry": rings_to_geojson_geometry(rings),
             "properties": {k: v for k, v in row.items() if k != "polygon_wkt"},
         })
 

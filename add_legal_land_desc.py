@@ -39,7 +39,7 @@ CSV_PATH = "data_center_row_cases.csv"
 GEOJSON_PATH = "data_center_row_cases.geojson"
 
 # reuse the same centroid math as add_geometry.py
-from add_geometry import polygon_centroid, rings_to_wkt
+from add_geometry import polygon_centroid, rings_to_geojson_geometry, rings_to_wkt
 
 
 def fetch_case_lands(case_number):
@@ -119,7 +119,7 @@ def main():
 
         geojson["features"].append({
             "type": "Feature",
-            "geometry": {"type": "MultiPolygon", "coordinates": [[r] for r in all_rings]},
+            "geometry": rings_to_geojson_geometry(all_rings),
             "properties": {k: v for k, v in row.items() if k != "polygon_wkt"},
         })
 

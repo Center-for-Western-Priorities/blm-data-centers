@@ -65,6 +65,8 @@ Pipeline order after the search passes:
 
 Pass `--no-deploy` to `build_map_data.py` to rebuild without deploying. Python dependencies are in `requirements.txt`.
 
+The ring-to-GeoJSON conversion (`rings_to_geojson_geometry` in `add_geometry.py`) has tests, including a check that every hole in the published geojson sits inside its shell. Run them with `.venv/bin/pip install -r requirements-dev.txt && .venv/bin/python -m pytest tests`.
+
 ## Reading the map
 
 - **Disposition** is BLM's case status. *Pending* means an application is under review. *Authorized* means a land-use authorization has been issued. *Interim* is a BLM status between pending and final; in this dataset it includes some withdrawn applications and cases BLM moved out of Pending without a final decision. *Closed* means the case ended, usually without action. The map opens with Closed hidden; the checkbox turns it on.

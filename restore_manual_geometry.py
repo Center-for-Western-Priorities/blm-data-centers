@@ -20,6 +20,8 @@ detects that (the row already has a polygon_wkt) and leaves it alone.
 import csv
 import json
 
+from add_geometry import rings_to_geojson_geometry
+
 CSV_PATH = "data_center_row_cases.csv"
 GEOJSON_PATH = "data_center_row_cases.geojson"
 
@@ -162,7 +164,7 @@ def main():
             rings = wkt_to_rings(recovery["polygon_wkt"])
             geojson["features"].append({
                 "type": "Feature",
-                "geometry": {"type": "MultiPolygon", "coordinates": [[r] for r in rings]},
+                "geometry": rings_to_geojson_geometry(rings),
                 "properties": {k: v for k, v in row.items() if k != "polygon_wkt"},
             })
 
