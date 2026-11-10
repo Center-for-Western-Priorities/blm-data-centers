@@ -7,6 +7,23 @@ Source: BLM MLRS public ArcGIS REST service (`Land_Use_Authorizations/Rights_of_
 
 Combined: 137 raw hits, manually reviewed down to 36 confirmed + 3 flagged-ambiguous cases. Full raw list: `candidates_raw.csv`. Filtered list: `data_center_row_cases.csv`.
 
+## Refresh, 2026-11-10
+
+Run late (the scheduled Tuesday run did not fire this morning). Re-ran both search passes (same lists as 2026-10-21; 246 merged raw hits) and re-queried all 41 previously tracked case numbers directly; all 41 still exist. Net result: **1 new case added (flagged-ambiguous, see below), 3 status changes, 2 acreage changes, 1 interest-percentage change, 1 disposition-date change, 0 renames, 0 removals.** Geometry pipeline re-run end to end (`add_geometry.py` hit one transient BLM read timeout on its first attempt and was simply re-run): **35/42 mapped (was 34/41)** — the new case has BLM geometry; same 7 unmapped.
+
+**Status/acreage drift on existing cases:**
+- **WYWY106759247** (Jacqueline Data Center Project, Copia Digital, Rock Springs FO) — Interim → **Closed, "Case Closed"** (was Interim / "Application Withdrawn"); disposition date now 2026-03-11 (was 2026-06-24).
+- **NVNV105864035** (Eldorado GenTie (Skylar), Skylar Opportunities, Las Vegas FO) — Interim → **Closed, "Case Closed without Action"** (same 2026-08-28 disposition date); recorded acreage **42.0 → 21,571.88**. The acreage jump looks like a records artifact on a closed case — treat as provisional, same caveat as earlier acreage-drift findings.
+- **IDID106725198** (unnamed, Copia Power Sawtooth DevCo, Four Rivers FO) — Pending → **Closed** (action "Case Closed", filed 2025-04-14; the CSV previously carried "Case Closed" under a Pending layer).
+- **OROR106761793** (Charleston Data Center and BESS, Copia, Baker FO, still Pending) — recorded acreage **106.0 → 195.36**; interest percentage 0.0 → 100.0.
+- **UTUT106833224** (unnamed Valar Atomics distribution-line case, Price FO, still Pending) — disposition date was blank, now **2026-07-23**.
+
+**New case (flagged-ambiguous, added at Aaron's direction):** `UTUT106859705` — **SCUTA Fiber Line to Data Center**, South Central Utah Telephone Association, Cedar City FO, Pending, filed 2026-09-02, 10.727 ac (10 ft wide, ~46,728 ft / ~8.9 mi), **mapped** (centroid ~37.777, -113.328). Flagged-ambiguous because the case name says it serves a data center but a web search turned up nothing tying it to a named developer or project, and the applicant is a telecom cooperative rather than a data-center developer. Tracked as supporting infrastructure, similar to "Powerline to Prometheus facility."
+
+**Noise reviewed, rejected:** `NMNM106000450` (Pano AI Inc, Roswell FO, Authorized communication site — wildfire-camera company); logged in `candidates_raw.csv` along with the SCUTA row. All other raw hits are the already-documented false-positive families. No new developer names surfaced. `WYWY105862062` (Powerline to Prometheus facility) was re-found by direct lookup only, as in prior passes.
+
+Status breakdown: 29 Pending, 9 Closed, 3 Authorized, 1 Interim (42 total; was 29/6/3/3 of 41 on 2026-10-21).
+
 ## Refresh, 2026-10-21
 
 **Host move.** After the ~2026-10-19 outage (see `external_research/mlrs_outage_log.md`), BLM's ArcGIS REST services came back on a new host and path: `https://nlsdbpubgis.blm.gov/arcgis/rest/services/...` (was `https://gis.blm.gov/nlsdb/rest/services/...`; the old host now 301-redirects to the new root). Service names, layer IDs (Authorized 0 / Pending 1 / Interim 2 / Closed 3) and field names are unchanged. `add_geometry.py`, `add_legal_land_desc.py` and the docs were updated to the new base URL.
