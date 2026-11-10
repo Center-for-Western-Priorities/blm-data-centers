@@ -15,7 +15,8 @@ layer's own Shape is null.
 For every row in data_center_row_cases.csv:
   - adds a `legal_land_description` column: semicolon-joined MTRS
     strings from CSE_LND_META (e.g. "AZ 14 0020S 0100W 032 Z W2NW,W2SW"
-    = AZ, Meridian 14, T20S, R100W, Sec 32, aliquot W2NW+W2SW), when
+    = AZ, Meridian 14, T2S, R10W, Sec 32, aliquot W2NW+W2SW; township
+    and range are three digits plus a trailing fractional digit), when
     Case_Lands has any record for that case - independent of whether
     geometry was recoverable.
   - for rows that are STILL missing centroid/polygon_wkt after

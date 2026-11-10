@@ -2,7 +2,7 @@
 
 This documents the exact method used in this project to search BLM's Mineral & Land Records System (MLRS) land-use-authorization / rights-of-way (ROW) data — without clicking through the map UI's attribute table. It's written so a human or another agent can reproduce every step.
 
-**Scope note:** this covers the MLRS/GIS ROW database only. It does *not* cover BLM's separate NEPA project register (eplanning.blm.gov), which has no comparable open REST API and had to be driven through its web UI instead.
+**Scope note:** this covers the MLRS/GIS ROW database and its sibling `Case_Lands` legal-description service (§8). It does *not* cover BLM's separate NEPA project register (eplanning.blm.gov), which has no comparable open REST API and had to be driven through its web UI instead.
 
 **Host change (2026-10-21):** BLM moved the service from `gis.blm.gov/nlsdb/rest/services/...` to `nlsdbpubgis.blm.gov/arcgis/rest/services/...` after the October 2026 outage. Everything else (service names, layer IDs, fields) is unchanged, and the old host 301-redirects to the new root only. All URLs below use the new host.
 
@@ -207,3 +207,59 @@ Prompted by the Oregon miss, we ran a wider industry-research pass (news search 
 `TERRAPOWER` · `NATRIUM` · `SABEY` · `CRUSOE` · `KAIROS` · `DEEP ATOMIC` · `TRACT` / `FLEET DATA` · `O'LEARY DIGITAL` / `STRATOS` (note the apostrophe breaks the ArcGIS SQL parser — `where=UPPER(CUST_NM_SEC) LIKE '%O''LEARY%'` needs the doubled single-quote escape, or just search `OLEARY` and `STRATOS` separately)
 
 **Also watch for silent data drift between pulls.** The same re-check found that Valar's `UTUT106801248` had been renamed in BLM's system (from "Raceway Gigasite..." to "Project Beehive...") and that Charleston Data Center's recorded acreage had grown from 36 to 106 acres — both since our original 2026-09-10 pull, with no announcement. `RCRD_ACRS` and `CSE_NAME` on Pending cases should be treated as provisional and worth periodically re-pulling for any case you're actively tracking or citing publicly.
+
+## 8. Legal land descriptions: the sibling `Case_Lands` service
+
+The ROW case layer above only tells you *that* a case exists and, when BLM has drawn it, its `Shape`. Many early-stage cases have no Shape yet. A separate service on the same host carries each case's **legal land description** (the lands cited in the case record, from BLM's LR2000 Case Recordation data), and often a PLSS-derived polygon for those lands, even when the ROW layer has none. `add_legal_land_desc.py` uses it.
+
+```
+https://nlsdbpubgis.blm.gov/arcgis/rest/services/Case_Lands/MapServer/0
+```
+
+It's a single polygon layer (layer `0`, `maxRecordCount` 2000) with **one row per land parcel a case cites**, not one row per case, so a single `CSE_NR` usually returns several rows. Join it to the ROW data on `CSE_NR`. Useful fields (run `.../Case_Lands/MapServer/0?f=json` for the full list):
+
+| Field name | Alias | Notes |
+|---|---|---|
+| `CSE_NR` | Case Serial Number | Join key, same format as the ROW layer |
+| `CSE_LND_META` | Case Land Metadata | The legal description string for this parcel (format below) |
+| `CSE_LND_ACRS` | Case Land Acres | Acres for this parcel, not the whole case |
+| `CSE_LND_STATUS` / `CSE_LND_STATUS_DT` | Case Land Status / Date | Parcel-level status |
+| `QLTY` | Data Quality | Geocoding log; shows when BLM's own join failed (e.g. `TOWNSHIP NOT FOUND`) |
+| `SF_ID` / `SF_CL_ID` | Salesforce ID of the case / of the case-land record | |
+| `Shape` | Shape | PLSS-derived polygon for the parcel, when BLM could geocode it |
+
+### 8a. Pulling a case's legal description
+
+```bash
+curl -s "https://nlsdbpubgis.blm.gov/arcgis/rest/services/Case_Lands/MapServer/0/query" \
+  --data-urlencode "where=CSE_NR='AZAZ106766456'" \
+  --data-urlencode "outFields=CSE_NR,CSE_LND_META" \
+  --data-urlencode "returnGeometry=false" \
+  --data-urlencode "f=json"
+```
+
+This returns six rows for the Harquahala to Hyder transmission line, one per parcel. Each `CSE_LND_META` is a space-separated MTRS (meridian/township/range/section) string:
+
+```
+AZ 14 0020S 0100W 032 Z W2NW,W2SW
+│  │  │     │     │   │ └─ aliquot parts or lot numbers (here W½NW¼ + W½SW¼)
+│  │  │     │     │   └─ subdivision type code
+│  │  │     │     └─ section 32
+│  │  │     └─ range 10 W (three digits plus a trailing fractional-range digit, 0 when none: 0100W = R10W)
+│  │  └─ township 2 S (same four-digit format: 0020S = T2S)
+│  └─ principal meridian code (14 = Gila and Salt River)
+└─ state
+```
+
+Lots appear as e.g. `AZ 14 0030S 0100W 005 L 2` (Lot 2 of Sec. 5). Join a case's rows with `"; "` to get one value per case. That's what goes into the `legal_land_description` column.
+
+### 8b. Pulling geometry as a fallback
+
+Set `returnGeometry=true` and `outSR=4326` to get WGS84 polygon rings. Each parcel row has its own rings, so union all of a case's rings to get the case footprint. `add_legal_land_desc.py` does this only for cases still missing geometry after `add_geometry.py`, and it recovered `AZAZ106766456` this way.
+
+### 8c. Gotchas
+
+- **It's slow.** Single-case queries regularly take 30 seconds or more. The script uses a 120-second timeout with retries; a short default timeout will fail intermittently.
+- **No record isn't the same as no land.** Some cases have no `Case_Lands` rows at all because BLM hasn't recorded a legal description yet. Others have a description but no Shape, because BLM's join to the survey grid failed (check `QLTY`). In the second case the lands may still be surveyed and recoverable by hand from BLM's national PLSS service; see `WYWY106759247` in `SUMMARY.md`.
+- **Not every record follows the format.** `WYWY106759247` is stored as `WY 06 0020N 0101W ...`. Read by the standard format, that's T2N R10W, which falls outside Wyoming. That's probably why BLM's join reports `TOWNSHIP NOT FOUND`. The lands it actually means are T20N R101W, next to the Jim Bridger plant, where the hand-recovered polygon sits. If a decoded township lands somewhere implausible, try reading it without the trailing fractional digit.
+- **Rerun order matters.** `add_geometry.py` and `add_legal_land_desc.py` both rewrite the CSV and GeoJSON wholesale. Run `add_geometry.py`, then `add_legal_land_desc.py`, then `restore_manual_geometry.py`.
