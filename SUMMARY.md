@@ -7,6 +7,26 @@ Source: BLM MLRS public ArcGIS REST service (`Land_Use_Authorizations/Rights_of_
 
 Combined: 137 raw hits, manually reviewed down to 36 confirmed + 3 flagged-ambiguous cases. Full raw list: `candidates_raw.csv`. Filtered list: `data_center_row_cases.csv`.
 
+## Refresh, 2026-11-24
+
+Re-ran both search passes (same lists as 2026-11-17, including the full §7 watch list; 246 merged raw hits, all already logged in `candidates_raw.csv`) and re-queried all 42 tracked case numbers directly; all 42 still exist. Net result: **0 new cases, 0 status changes, 0 acreage changes, 0 date changes, 1 rename, 0 removals.** This refresh builds on the uncommitted 2026-11-17 working state.
+
+**Rename / reclassification:** `NVNV105844791` (Townsite Data Center, Townsite Solar 2 LLC, Las Vegas FO, still **Authorized**, 85 ac, 2026-04-22) — BLM's `CSE_NAME` changed from "Townsite Data Center" to **"TS2 Solar Project (Townsite Data Center-amendment vacated by IBLA). Amendment to Data Center being reprocessed."**, and the case was reclassified from commodity OTHER / product "Other Federal Land Policy and Management Act" to **SOLAR ENERGY FACILITIES / "Solar Development Grant"**. This is MLRS catching up with the IBLA decision already noted in `case_notes.json` (approval vacated 2026-10-15 and sent back for new review): the case record now reflects the original solar grant, with the data-center amendment being reprocessed. Kept as a confirmed case since the name still says the data-center amendment is pending; the CSV/map now carry BLM's new name.
+
+**Minor field fix:** `NVNV106774473` (Horizon Project, Skylar) commodity now returns OTHER (CSV had NONE). Prior refreshes didn't compare the commodity field, so this may have changed before this week.
+
+Geometry pipeline re-run end to end with no errors: **35/42 mapped (unchanged)**, same 7 unmapped (1 with an estimated location, Project Beehive; `estimated_locations.json` still applies, since that case still has no BLM geometry).
+
+Status breakdown: unchanged, 29 Pending, 9 Closed, 3 Authorized, 1 Interim (42 total).
+
+## Refresh, 2026-11-17
+
+Re-ran both search passes (same lists as 2026-11-10, including the full §7 watch list; 246 merged raw hits, all already logged in `candidates_raw.csv`) and re-queried all 42 tracked case numbers directly; all 42 still exist. Net result: **0 new cases, 0 status changes, 0 acreage changes, 0 date changes, 0 renames, 0 removals.** The only field-level difference is cosmetic: BLM now returns the field-office name in title case for three cases (`NVNV106774473` and `NVNV106392400` "Las Vegas Field Office", `IDID106725198` "Four Rivers Field Office"); the CSV keeps the upper-case form used for every other row.
+
+Geometry pipeline re-run end to end with no errors: **35/42 mapped (unchanged)**, same 7 unmapped (1 with an estimated location, Project Beehive; `estimated_locations.json` still applies, since that case still has no BLM geometry). The regenerated GeoJSON differs from the committed one only in that SCUTA Fiber Line (`UTUT106859705`) now carries its legal land description (the CSV already had it).
+
+Status breakdown: unchanged, 29 Pending, 9 Closed, 3 Authorized, 1 Interim (42 total).
+
 ## Refresh, 2026-11-10
 
 Run late (the scheduled Tuesday run did not fire this morning). Re-ran both search passes (same lists as 2026-10-21; 246 merged raw hits) and re-queried all 41 previously tracked case numbers directly; all 41 still exist. Net result: **1 new case added (flagged-ambiguous, see below), 3 status changes, 2 acreage changes, 1 interest-percentage change, 1 disposition-date change, 0 renames, 0 removals.** Geometry pipeline re-run end to end (`add_geometry.py` hit one transient BLM read timeout on its first attempt and was simply re-run): **35/42 mapped (was 34/41)** — the new case has BLM geometry; same 7 unmapped.

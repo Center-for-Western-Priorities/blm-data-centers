@@ -3623,7 +3623,7 @@
       "properties": {
         "case_number": "NVNV105844791",
         "legacy_case_number": "NVN    099875",
-        "geographic_name": "Townsite Data Center",
+        "geographic_name": "TS2 Solar Project (Townsite Data Center-amendment vacated by IBLA). Amendment to Data Center being reprocessed.",
         "business_account_name": "TOWNSITE SOLAR 2, LLC",
         "pct_interest": "100.0",
         "geo_state": "NV",
@@ -3631,8 +3631,8 @@
         "disposition": "Authorized",
         "disposition_date": "2026-04-22",
         "disposition_action": "Land Use Authorization Issued",
-        "commodity": "OTHER",
-        "blm_product": "OTHER FEDERAL LAND POLICY AND MANAGEMENT ACT",
+        "commodity": "SOLAR ENERGY FACILITIES",
+        "blm_product": "Solar Development Grant",
         "jurisdiction": "Las Vegas Field Office",
         "acres": "85.0",
         "width": "",
@@ -7416,7 +7416,7 @@
         "salesforce_id": "a02SJ00000P80fZYAR",
         "centroid_lat": "37.777270",
         "centroid_lon": "-113.327931",
-        "legal_land_description": ""
+        "legal_land_description": "UT 26 0340S 0140W 034 A S2SESW,S2SWSE,S2SESE; UT 26 0340S 0140W 035 A S2SWSW,S2SESW,SWSE,SESE; UT 26 0350S 0130W 005 A S2NWSW,NESWSW,SESW,SWSE; UT 26 0350S 0130W 006 A S2SWNE,SENW,N2NWSE,NESE; UT 26 0350S 0130W 006 L 5; UT 26 0350S 0130W 009 A SWNE,SWSENE,SWNENW,NWNW,SENW,N2NESE; UT 26 0350S 0130W 010 A S2NESW,NWSW,N2SESW,SWSE,S2SESE; UT 26 0350S 0130W 013 A SWSWNW,NESW,N2NWSW,SWNWSE,SWSE; UT 26 0350S 0130W 013 L 4; UT 26 0350S 0130W 014 A SWNWSE,SWNE,SENE,NENW,NWNW; UT 26 0350S 0130W 015 A NENENE; UT 26 0350S 0140W 001 L 1,2,3,4"
       }
     },
     {
